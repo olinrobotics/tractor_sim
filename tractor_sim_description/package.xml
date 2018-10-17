@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <name>tractor_sim_description</name>
+  <version>0.1.3</version>
+  <description>
+    tractor_sim_description contains the description (3D model,
+    kinematics, mass, etc.) of a tractor with Ackermann steering.
+  </description>
+  <maintainer email="amy.phung@students.olin.edu">
+    Amy Phung
+  </maintainer>
+  <license>Apache 2.0</license>
+
+<!--CHANGE LATER-->
+  <url type="website">http://wiki.ros.org/ackermann_vehicle_description</url>
+  <url type="bugtracker">https://github.com/wunderkammer-laboratory/ackermann_vehicle/issues</url>
+  <url type="repository">https://github.com/wunderkammer-laboratory/ackermann_vehicle.git</url>
+
+  <author email="jim.rothrock@wunderkammerlab.com">Jim Rothrock</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>gazebo_ros_control</run_depend>
+  <run_depend>hardware_interface</run_depend>
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>rviz</run_depend>
+  <run_depend>transmission_interface</run_depend>
+  <run_depend>xacro</run_depend>
+
+  <export>
+    <architecture_independent/>
+  </export>
+</package>
