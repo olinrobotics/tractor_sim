@@ -7,23 +7,10 @@
 
   <!-- chassis_length is measured along the x axis, chassis_width
        along the y axis, and chassis_height along the z axis. -->
-  <xacro:property name="chassis_length" value="0.258"/>
-  <xacro:property name="chassis_width" value="0.168"/>
-  <xacro:property name="chassis_height" value="0.01"/>
+  <xacro:property name="chassis_length" value="1.5"/>
+  <xacro:property name="chassis_width" value="0.6"/>
+  <xacro:property name="chassis_height" value="0.1"/>
   <xacro:property name="chassis_mass" value="2.788"/>
-
-  <!-- battery_dist is the distance between the inner edges of the
-       batteries. battery_comp_depth is the battery compartment depth.
-       battery_length is measured along the x axis, battery_width
-       along the y axis, and battery_height along the z axis. -->
-  <xacro:property name="battery_x_offset" value="0.055"/>
-  <xacro:property name="battery_dist" value="0.065"/>
-  <xacro:property name="battery_comp_depth" value="0.02"/>
-  <xacro:property name="battery_comp_angle" value="0.34906585"/>
-  <xacro:property name="battery_length" value="0.16"/>
-  <xacro:property name="battery_width" value="0.047"/>
-  <xacro:property name="battery_height" value="0.024"/>
-  <xacro:property name="battery_mass" value="0.5025"/>
 
   <!-- hub_dia and tire_dia are the diameters of the hub and tire,
        respectively. hex_hub_depth is the distance that the hex hub is
@@ -31,18 +18,18 @@
        is a "zero offset" wheel. hex_hub_depth = tire_width / 2 -
        axle_length. -->
   <xacro:property name="hub_dia" value="0.09652"/>
-  <xacro:property name="tire_dia" value="0.14605"/>
-  <xacro:property name="tire_width" value="0.0889"/>
-  <xacro:property name="hex_hub_depth" value="0.01445"/>
+  <xacro:property name="tire_dia" value="0.7"/>
+  <xacro:property name="tire_width" value="0.2"/>
+  <xacro:property name="hex_hub_depth" value="${tire_width / 2 - axle_length}"/> <!-- tire_width / 2 - axle_length-->
   <xacro:property name="wheel_mass" value="0.29"/>
 
   <!-- hex_hub_dist is the distance between left and right hex hubs when
        the shock absorbers are fully extended. axle_length is the distance
        from a U joint to the corresponding hex hub. wheel_travel is the
        vertical wheel travel. -->
-  <xacro:property name="wheelbase" value="0.335"/>
-  <xacro:property name="hex_hub_dist" value="0.365"/>
-  <xacro:property name="axle_length" value="0.03"/>
+  <xacro:property name="wheelbase" value="1.5"/>
+  <xacro:property name="hex_hub_dist" value="1.4"/>
+  <xacro:property name="axle_length" value="0.3"/>
   <xacro:property name="wheel_travel" value="0.084"/>
   <xacro:property name="shock_z_offset" value="0.0655"/>
 
@@ -50,8 +37,8 @@
        shock_stroke is 0.028575 meters. shock_spring_constant, an approximation
        of a Traxxas Ultra Shock shock absorber spring's constant, is
        437.817 N/m. -->
-  <xacro:property name="shock_eff_limit" value="12.5106"/>
-  <xacro:property name="shock_vel_limit" value="1000"/>
+  <xacro:property name="shock_eff_limit" value="125106"/>
+  <xacro:property name="shock_vel_limit" value="1000000"/>
 
   <!-- The specifications for a Titan(R) 550 motor could not be found, so the
        stall torque of a Mabuchi Motor(R) RS-550VC-7525 motor was used instead.
@@ -65,18 +52,15 @@
        max_speed = 40 mph (30+ mph) = 17.8816 m/s
        axle_vel_limit = (2 * pi) * (max_speed / (pi * tire_dia)) =
          244.8696 rad/s -->
-  <xacro:property name="axle_eff_limit" value="5.12766"/>
-  <xacro:property name="axle_vel_limit" value="244.8696"/>
+  <xacro:property name="axle_eff_limit" value="512766"/>
+  <xacro:property name="axle_vel_limit" value="2448696"/>
 
   <!-- These constants are used to simulate a Traxxas 2056 servo operated at
        6 V. servo_stall_torque is measured in N m. servo_no_load_speed is
        measured in rad/s. -->
-  <xacro:property name="servo_stall_torque" value="0.5649"/>
-  <xacro:property name="servo_no_load_speed" value="4.553"/>
+  <xacro:property name="servo_stall_torque" value="5649"/>
+  <xacro:property name="servo_no_load_speed" value="4553"/>
 
-  <material name="battery_mat">
-    <color rgba="0 0 1 1"/>
-  </material>
   <material name="chassis_mat">
     <color rgba="0.5 0.5 0.5 1"/>
   </material>
@@ -126,54 +110,6 @@
     </inertial>
   </xacro:macro>
 
-  <!-- Battery -->
-  <xacro:macro name="battery" params="prefix reflect">
-    <joint name="chassis_to_${prefix}_battery" type="fixed">
-      <parent link="chassis"/>
-      <child link="${prefix}_battery_offset"/>
-      <origin xyz="${battery_x_offset - battery_length / 2}
-                   ${reflect * battery_dist / 2}
-                   0"
-              rpy="${reflect * battery_comp_angle} 0 0"/>
-    </joint>
-
-    <link name="${prefix}_battery_offset">
-      <xacro:null_inertial/>
-    </link>
-
-    <joint name="offset_to_${prefix}_battery" type="fixed">
-      <parent link="${prefix}_battery_offset"/>
-      <child link="${prefix}_battery"/>
-      <origin xyz="0
-                   ${reflect * battery_width / 2}
-                   ${(battery_height / 2) - battery_comp_depth}"/>
-    </joint>
-
-    <link name="${prefix}_battery">
-      <visual>
-        <geometry>
-          <box size="${battery_length} ${battery_width} ${battery_height}"/>
-        </geometry>
-        <material name="battery_mat"/>
-      </visual>
-
-      <collision>
-        <geometry>
-          <box size="${battery_length} ${battery_width} ${battery_height}"/>
-        </geometry>
-      </collision>
-
-      <xacro:solid_cuboid_inertial
-         width="${battery_length}" depth="${battery_width}"
-         height="${battery_height}" mass="${battery_mass}">
-        <origin/>
-      </xacro:solid_cuboid_inertial>
-    </link>
-
-    <gazebo reference="${prefix}_battery">
-      <material>Gazebo/Blue</material>
-    </gazebo>
-  </xacro:macro>
 
   <!-- Shock absorber -->
   <xacro:macro name="shock"
@@ -354,9 +290,6 @@
     <child link="chassis"/>
   </joint>
 
-  <!-- Batteries -->
-  <xacro:battery prefix="left" reflect="1"/>
-  <xacro:battery prefix="right" reflect="-1"/>
 
   <!-- Wheels -->
   <xacro:front_wheel lr_prefix="left" fr_prefix="front"
