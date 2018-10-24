@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <robot name="kubo" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find hector_sensors_description)/urdf/hokuyo_utm30lx.urdf.xacro"/>
+  <xacro:include filename="$(find tractor_sim_description)/urdf/kubo.gazebo" />
 
   <!-- Degree-to-radian conversions -->
   <xacro:property name="degrees_45" value="0.785398163"/>
@@ -68,6 +68,10 @@
        measured in rad/s. -->
   <xacro:property name="servo_stall_torque" value="5649"/>
   <xacro:property name="servo_no_load_speed" value="4553"/>
+
+  <xacro:property name="cameraSize" value="0.05"/>
+  <xacro:property name="cameraMass" value="0.1"/>
+
 
   <material name="chassis_mat">
     <color rgba="0.5 0.5 0.5 1"/>
@@ -317,7 +321,73 @@
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
   </gazebo>
 
-  <hokuyo_utm30lx_model name="hokuyo_laser" parent="base_link">
-    <origin xyz="0 0 +0.30" rpy="0 0 0" />
-  </hokuyo_utm30lx_model>
+
+
+
+
+
+
+
+
+  <link name="camera">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+
+    <inertial>
+      <mass value="${cameraMass}" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz=".2 0 .3" rpy="0 0 0"/> <!-- CHANGE LATER-->
+    <parent link="chassis"/>
+    <child link="camera"/>
+  </joint>
+
+
+  <joint name="hokuyo_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz=".15 0 .2" rpy="0 -.1 0"/> <!-- CHANGE LATER-->
+    <parent link="chassis"/>
+    <child link="hokuyo"/>
+  </joint>
+
+  <!-- Hokuyo Laser -->
+  <link name="hokuyo">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://tractor_sim_description/meshes/hokuyo.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
 </robot>

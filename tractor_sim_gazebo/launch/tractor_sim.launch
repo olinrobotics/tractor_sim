@@ -71,14 +71,5 @@ limitations under the License.
       <rosparam file="$(find tractor_sim_gazebo)/config/kubo_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
 
-    <node name="hokuyo" pkg="urg_node" type="urg_node" respawn="false" output="screen">
-     <param name="calibrate_time" type="bool" value="true"/>
-     <param name="port" type="string" value="/dev/ttyACM0"/>
-     <param name="intensity" type="bool" value="false"/>
-     <param name="min_ang" value="-2.2689"/>
-     <param name="max_ang" value="+2.2689"/>
-     <param name="cluster" value="1"/>
-     <param name="frame_id" value="hokuyo_laser_frame"/>
-    </node>
   </group>
 </launch>
