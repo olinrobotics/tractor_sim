@@ -74,8 +74,8 @@
   <xacro:property name="servo_stall_torque" value="5649"/>
   <xacro:property name="servo_no_load_speed" value="4553"/>
 
-  <xacro:property name="cameraSize" value="0.05"/>
-  <xacro:property name="cameraMass" value="0.1"/>
+  <xacro:property name="sensorSize" value="0.05"/> <!--TODO: Get rid of this -->
+  <xacro:property name="sensorMass" value="0.1"/>
 
 
 
@@ -137,41 +137,21 @@
   <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
                     lr_reflect="-1" fr_reflect="-1"/>
 
-<!-- TODO: Write a macro for sensors -->
-
   <!-- Camera -->
-  <link name="camera">
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <box size="${cameraSize} ${cameraSize} ${cameraSize}"/>
-      </geometry>
-      <material name="green"/>
-    </visual>
-
-    <inertial>
-      <mass value="${cameraMass}" />
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <box_inertia m="${cameraMass}" x="${cameraSize}" y="${cameraSize}" z="${cameraSize}" />
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
-  </link>
-
-  <joint name="camera_joint" type="fixed">
-    <axis xyz="0 1 0" />
-    <origin xyz=".2 0 .5" rpy="0 0 0"/> <!-- CHANGE LATER-->
-    <parent link="chassis"/>
-    <child link="camera"/>
-  </joint>
-
+  <xacro:sensor sensor_name="camera"
+                x_pos="0" y_pos="0" z_pos="0"
+                x_rot="0" y_rot="0" z_rot="0"/>
+  <xacro:sensor sensor_name="hokuyo"
+                x_pos="0" y_pos="0" z_pos="0"
+                x_rot="0" y_rot="0" z_rot="0"/>
+  <xacro:sensor sensor_name="imu"
+                x_pos="0" y_pos="0" z_pos="0"
+                x_rot="0" y_rot="0" z_rot="0"/>
+  <xacro:sensor sensor_name="gps"
+                x_pos="0" y_pos="0" z_pos="0"
+                x_rot="0" y_rot="0" z_rot="0"/>
   <!-- Hokuyo Laser -->
+  <!-- Using mesh example
   <link name="hokuyo">
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -196,72 +176,11 @@
 
   <joint name="hokuyo_joint" type="fixed">
     <axis xyz="0 1 0" />
-    <origin xyz=".15 0 .6" rpy="0 -.1 0"/> <!-- CHANGE LATER-->
+    <origin xyz=".15 0 .6" rpy="0 -.1 0"/>
     <parent link="chassis"/>
     <child link="hokuyo"/>
   </joint>
-
-
-  <!-- GPS -->
-  <link name="gps">
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-    <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://tractor_sim_description/meshes/hokuyo.dae"/><!-- CHANGE LATER-->
-      </geometry>
-    </visual>
-
-    <inertial>
-      <mass value="1e-5" />
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
-  </link>
-
-  <joint name="gps_joint" type="fixed">
-    <axis xyz="0 1 0" />
-    <origin xyz=".15 0 .7" rpy="0 -.1 0"/> <!-- CHANGE LATER-->
-    <parent link="chassis"/>
-    <child link="gps"/>
-  </joint>
-
-  <!-- IMU -->
-  <link name="imu">
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-    <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </collision>
-
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry>
-        <mesh filename="package://tractor_sim_description/meshes/hokuyo.dae"/><!-- CHANGE LATER-->
-      </geometry>
-    </visual>
-
-    <inertial>
-      <mass value="1e-5" />
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-    </inertial>
-  </link>
-
-  <joint name="imu_joint" type="fixed">
-    <axis xyz="0 1 0" />
-    <origin xyz=".15 0 .8" rpy="0 -.1 0"/> <!-- CHANGE LATER-->
-    <parent link="chassis"/>
-    <child link="imu"/>
-  </joint>
-
+-->
 
 
 </robot>

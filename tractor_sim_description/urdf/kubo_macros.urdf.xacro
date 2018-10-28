@@ -212,4 +212,39 @@
                  hex_hub_depth="${bhex_hub_depth}" wheel_mass="${bwheel_mass}"/>
   </macro>
 
+  <macro name="sensor"
+         params = "sensor_name x_pos y_pos z_pos x_rot y_rot z_rot">
+     <link name="${sensor_name}">
+       <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="${sensorSize} ${sensorSize} ${sensorSize}"/> <!-- CHANGE LATER-->
+         </geometry>
+       </collision>
+
+       <visual>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+           <box size="${sensorSize} ${sensorSize} ${sensorSize}"/>
+         </geometry>
+         <material name="green"/>
+       </visual>
+
+       <inertial>
+         <mass value="${sensorMass}"/>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <box_inertia m="${sensorMass}" x="${sensorMass}" y="${sensorMass}" z="${sensorMass}" />
+         <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+       </inertial>
+     </link>
+
+     <joint name="${sensor_name}_joint" type="fixed">
+       <axis xyz="0 1 0" />
+       <origin xyz="${x_pos} ${y_pos} ${z_pos}" rpy="${x_rot} ${y_rot} ${z_rot}"/> <!-- CHANGE LATER-->
+       <parent link="base_link"/>
+       <child link="${sensor_name}"/>
+     </joint>
+
+  </macro>
+
 </robot>
