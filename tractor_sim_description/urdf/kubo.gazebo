@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 
+  <!-- TODO: Put base link in correct position (in-between back tires on floor) -->
+  <!-- TODO: Make sensor macro -->
+  <!-- TODO: Add meshes -->
+  <!-- TODO: Position everything relative to the base link -->
+  <!-- TODO: Document dependencies -->
+  <!-- TODO: Find sensor error parameters -->
+  <!-- TODO: Parameterize location of sensors -->
+  <!-- TODO: Put macros in separate file -->
+  <!-- TODO: Fix hardcoded bs in shocks -->
+
 <robot>
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+  </gazebo>
+  
+  <!-- camera -->
   <gazebo reference="camera">
     <material>Gazebo/Green</material>
     <sensor type="camera" name="camera1">
@@ -69,5 +84,41 @@
         <frameName>hokuyo</frameName>
       </plugin>
     </sensor>
+  </gazebo>
+
+  <!-- TODO: Look through logs on launch to set more params for imu, camera, and laser -->
+
+  <gazebo>
+    <plugin name="gazebo_ros_gps" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>4.0</updateRate>
+      <bodyName>gps</bodyName>
+      <frameId>sensor</frameId>
+      <topicName>tractor_sim/gps/fix</topicName>
+      <velocityTopicName>/gps/fix_velocity</velocityTopicName>
+      <referenceLatitude>-30.06022459407145675</referenceLatitude>
+      <referenceLongitude>-51.173913575780311191</referenceLongitude>
+      <referenceHeading>90</referenceHeading>
+      <referenceAltitude>10</referenceAltitude>
+      <offset>0 0 0</offset>
+      <drift>0.001 0.001 0.001</drift>
+      <gaussianNoise>0.05 0.05 0.05</gaussianNoise>
+      <velocityDrift>0.001 0.001 0.001</velocityDrift>
+      <velocityGaussianNoise>0.5 0.5 0.5</velocityGaussianNoise>
+  <!--                <drift>0.001 0.001 0.001</drift>-->
+  <!--                <gaussianNoise>0.01 0.01 0.01</gaussianNoise>-->
+  <!--                <velocityDrift>0 0 0</velocityDrift>-->
+  <!--                <velocityGaussianNoise>0.05 0.05 0.05</velocityGaussianNoise>-->
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <bodyName>imu</bodyName>
+      <topicName>tractor_sim/imu</topicName>
+      <serviceName>imu_service</serviceName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <updateRate>20.0</updateRate>
+    </plugin>
   </gazebo>
 </robot>

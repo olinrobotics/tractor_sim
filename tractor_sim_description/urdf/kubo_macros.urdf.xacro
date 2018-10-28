@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+
+<robot>
+  <!-- Null inertial element. This is needed to make the model work with
+       Gazebo. -->
+  <macro name="null_inertial">
+    <inertial>
+      <mass value="0.001"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </macro>
+
+  <!-- Inertia of a solid cuboid. Width is measured along the x axis, depth
+       along the y axis, and height along the z axis. -->
+  <macro name="solid_cuboid_inertial"
+               params="width depth height mass *origin">
+    <inertial>
+      <insert_block name="origin"/>
+      <mass value="${mass}"/>
+      <inertia ixx="${mass * (depth * depth + height * height) / 12}"
+               ixy="0" ixz="0"
+               iyy="${mass * (width * width + height * height) / 12}"
+               iyz="0"
+               izz="${mass * (width * width + depth * depth) / 12}"/>
+    </inertial>
+  </macro>
+
+  <!-- Inertia of a thick-walled cylindrical tube with open ends. Height is
+       measured along the z axis, which is the tube's axis. inner_rad and
+       outer_rad are the tube's inner and outer radii, respectively. -->
+  <macro name="thick_walled_tube_inertial"
+               params="inner_rad outer_rad height mass">
+    <inertial>
+      <mass value="${mass}"/>
+      <inertia ixx="${(1 / 12) * mass * (3 * (inner_rad * inner_rad +
+                    outer_rad * outer_rad) + height * height)}"
+               ixy="0" ixz="0"
+               iyy="${(1 / 12) * mass * (3 * (inner_rad * inner_rad +
+                    outer_rad * outer_rad) + height * height)}"
+               iyz="0"
+               izz="${mass * (inner_rad * inner_rad +
+                    outer_rad * outer_rad) / 2}"/>
+    </inertial>
+  </macro>
+
+
+  <!-- Shock absorber -->
+  <macro name="bshock"
+               params="lr_prefix fr_prefix lr_reflect fr_reflect child">
+    <joint name="${lr_prefix}_${fr_prefix}_shock" type="prismatic">
+      <parent link="chassis"/>
+      <child link="${child}"/>
+
+      <origin xyz="${fr_reflect * wheelbase / 2 + (wheelbase/2)}
+                   ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                   ${(btire_dia / 2)}"/> <!-- Default: ${fr_reflect * wheelbase / 2}
+                                ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                                ${(wheel_travel / 2) - shock_z_offset}"-->
+      <axis xyz="0 0 -1"/>
+      <limit lower="${-wheel_travel / 2}" upper="${wheel_travel / 2}"
+             effort="${shock_eff_limit}" velocity="${shock_vel_limit}"/>
+    </joint>
+    <transmission name="${lr_prefix}_${fr_prefix}_shock_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${lr_prefix}_${fr_prefix}_shock">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${lr_prefix}_${fr_prefix}_shock_act">
+        <!-- This hardwareInterface element exists for compatibility
+             with ROS Hydro. -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </macro>
+
+  <macro name="fshock"
+               params="lr_prefix fr_prefix lr_reflect fr_reflect child">
+    <joint name="${lr_prefix}_${fr_prefix}_shock" type="prismatic">
+      <parent link="chassis"/>
+      <child link="${child}"/>
+
+      <origin xyz="${fr_reflect * wheelbase / 2 + (wheelbase/2)}
+                   ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                   ${(ftire_dia / 2)}"/> <!-- Default: ${fr_reflect * wheelbase / 2}
+                                ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                                ${(wheel_travel / 2) - shock_z_offset}"-->
+      <axis xyz="0 0 -1"/>
+      <limit lower="${-wheel_travel / 2}" upper="${wheel_travel / 2}"
+             effort="${shock_eff_limit}" velocity="${shock_vel_limit}"/>
+    </joint>
+    <transmission name="${lr_prefix}_${fr_prefix}_shock_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${lr_prefix}_${fr_prefix}_shock">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${lr_prefix}_${fr_prefix}_shock_act">
+        <!-- This hardwareInterface element exists for compatibility
+             with ROS Hydro. -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </macro>
+
+  <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
+  <macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width hex_hub_depth wheel_mass">
+    <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
+      <null_inertial/>
+    </link>
+
+    <!-- The left and right axles have the same axis so that identical
+         rotation values cause the wheels to rotate in the same direction. -->
+    <joint name="${lr_prefix}_${fr_prefix}_axle" type="continuous">
+      <parent link="${lr_prefix}_${fr_prefix}_axle_carrier"/>
+      <child link="${lr_prefix}_${fr_prefix}_wheel"/>
+      <origin rpy="${degrees_90} 0 0"/>
+      <axis xyz="0 0 -1"/>
+      <limit effort="${axle_eff_limit}" velocity="${axle_vel_limit}"/>
+    </joint>
+    <transmission name="${lr_prefix}_${fr_prefix}_axle_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${lr_prefix}_${fr_prefix}_axle">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${lr_prefix}_${fr_prefix}_axle_act">
+        <!-- This hardwareInterface element exists for compatibility
+             with ROS Hydro. -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <link name="${lr_prefix}_${fr_prefix}_wheel">
+      <visual>
+        <origin xyz="0
+                     ${lr_reflect * (axle_length - (tire_width /
+                     2 - hex_hub_depth))}
+                     0"/>
+        <geometry>
+          <cylinder radius="${tire_dia / 2}" length="${tire_width}"/>
+        </geometry>
+        <material name="tire_mat"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0
+                     ${lr_reflect * (axle_length - (tire_width /
+                     2 - hex_hub_depth))}
+                     0"/>
+        <geometry>
+          <cylinder radius="${tire_dia / 2}" length="${tire_width}"/>
+        </geometry>
+      </collision>
+
+      <thick_walled_tube_inertial
+          inner_rad="${hub_dia / 2}" outer_rad="${tire_dia / 2}"
+          height="${tire_width}" mass="${wheel_mass}"/>
+    </link>
+
+    <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
+      <material>Gazebo/Black</material>
+    </gazebo>
+  </macro>
+
+  <!-- Front wheel -->
+  <macro name="front_wheel"
+               params="lr_prefix fr_prefix lr_reflect fr_reflect">
+    <fshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+                 lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
+                 child="${lr_prefix}_steering_link"/>
+
+    <link name="${lr_prefix}_steering_link">
+      <null_inertial/>
+    </link>
+
+    <joint name="${lr_prefix}_steering_joint" type="revolute">
+      <parent link="${lr_prefix}_steering_link"/>
+      <child link="${lr_prefix}_${fr_prefix}_axle_carrier"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${-degrees_45}" upper="${degrees_45}"
+             effort="${servo_stall_torque}" velocity="${servo_no_load_speed}"/>
+    </joint>
+    <transmission name="${lr_prefix}_steering_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${lr_prefix}_steering_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${lr_prefix}_steering_act">
+        <!-- This hardwareInterface element exists for compatibility
+             with ROS Hydro. -->
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+                 lr_reflect="${lr_reflect}"
+                 tire_dia="${ftire_dia}" tire_width="${ftire_width}"
+                 hex_hub_depth="${fhex_hub_depth}" wheel_mass="${fwheel_mass}"/>
+  </macro>
+
+  <!-- Rear wheel -->
+  <macro name="rear_wheel"
+               params="lr_prefix fr_prefix lr_reflect fr_reflect">
+    <bshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+                 lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
+                 child="${lr_prefix}_${fr_prefix}_axle_carrier"/>
+    <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+                 lr_reflect="${lr_reflect}"
+                 tire_dia="${btire_dia}" tire_width="${btire_width}"
+                 hex_hub_depth="${bhex_hub_depth}" wheel_mass="${bwheel_mass}"/>
+  </macro>
+
+</robot>
