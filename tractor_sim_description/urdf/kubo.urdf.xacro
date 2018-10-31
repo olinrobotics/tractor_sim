@@ -137,18 +137,23 @@
   <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
                     lr_reflect="-1" fr_reflect="-1"/>
 
-  <!-- Camera -->
+  <!-- Sensors -->
+  <!-- IMU approximate
+https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <xacro:sensor sensor_name="camera"
-                x_pos="0" y_pos="0" z_pos="0"
+                x_pos="2.08" y_pos="0" z_pos="1.04"
                 x_rot="0" y_rot="0" z_rot="0"/>
   <xacro:sensor sensor_name="hokuyo"
-                x_pos="0" y_pos="0" z_pos="0"
-                x_rot="0" y_rot="0" z_rot="0"/>
+                x_pos="2.02" y_pos="0" z_pos="1.19"
+                x_rot="0" y_rot="0.157" z_rot="0"/>
   <xacro:sensor sensor_name="imu"
-                x_pos="0" y_pos="0" z_pos="0"
+                x_pos="-0.3" y_pos="0" z_pos="1"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:sensor sensor_name="gps"
-                x_pos="0" y_pos="0" z_pos="0"
+  <xacro:sensor sensor_name="hemisphere_gps"
+                x_pos="1.94" y_pos="0" z_pos="1.49"
+                x_rot="0" y_rot="0" z_rot="0"/>
+  <xacro:sensor sensor_name="rtk_gps"
+                x_pos="0.3" y_pos="0" z_pos="2.21"
                 x_rot="0" y_rot="0" z_rot="0"/>
   <!-- Hokuyo Laser -->
   <!-- Using mesh example
