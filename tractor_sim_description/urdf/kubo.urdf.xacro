@@ -14,7 +14,7 @@
        along the y axis, and chassis_height along the z axis.
       Note: Size of chassis won't affect wheel position or function-->
   <xacro:property name="chassis_length" value="1.5"/>
-  <xacro:property name="chassis_width" value="0.6"/>
+  <xacro:property name="chassis_width" value="0.3"/>
   <xacro:property name="chassis_height" value="0.1"/>
   <xacro:property name="chassis_mass" value="2.788"/>
   <xacro:property name="chassis_offset" value=".25"/> <!-- Z Distance from ground -->
@@ -24,7 +24,7 @@
        inset from the outer edge of the tire. It is set so that each wheel
        is a "zero offset" wheel. hex_hub_depth = tire_width / 2 -
        axle_length. -->
-  <xacro:property name="hub_dia" value="0.09652"/> <!-- ? -->
+  <xacro:property name="hub_dia" value="0.09652"/> <!-- For inertia measurements -->
 
   <xacro:property name="ftire_dia" value="0.5"/>
   <xacro:property name="ftire_width" value="0.15"/>

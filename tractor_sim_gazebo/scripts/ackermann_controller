@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+"""
+Things changed from original:
+disabled auto stopping
+changed units from degrees to radians
+changed subscribed topic
+"""
+
 
 """ackermann_controller
 Control the wheels of a vehicle with Ackermann steering.
@@ -141,7 +148,7 @@ class _AckermannCtrlr(object):
                                          ListControllers)
         list_ctrlrs.wait_for_service()
 
-    
+
         # Command timeout
         try:
             self._cmd_timeout = float(rospy.get_param("~cmd_timeout",
@@ -218,8 +225,10 @@ class _AckermannCtrlr(object):
             _create_axle_cmd_pub(list_ctrlrs, right_rear_axle_ctrlr_name)
 
         self._ackermann_cmd_sub = \
-            rospy.Subscriber("ackermann_cmd", AckermannDrive,
+            rospy.Subscriber("/drive", AckermannDrive, #Changed from ackermann_cmd
                              self.ackermann_cmd_cb, queue_size=1)
+
+
 
     def spin(self):
         """Control the vehicle."""
@@ -230,7 +239,8 @@ class _AckermannCtrlr(object):
             t = rospy.get_time()
             delta_t = t - last_time
             last_time = t
-
+            """
+            #disable stopping
             if (self._cmd_timeout > 0.0 and
                 t - self._last_cmd_time > self._cmd_timeout):
                 # Too much time has elapsed since the last command. Stop the
@@ -238,9 +248,10 @@ class _AckermannCtrlr(object):
                 steer_ang_changed, center_y = \
                     self._ctrl_steering(self._last_steer_ang, 0.0, 0.001)
                 self._ctrl_axles(0.0, 0.0, 0.0, steer_ang_changed, center_y)
-            elif delta_t > 0.0:
+            el"""
+            if delta_t > 0.0:
                 with self._ackermann_cmd_lock:
-                    steer_ang = self._steer_ang
+                    steer_ang = self._steer_ang*(3.14/180) # convert from degrees to rad
                     steer_ang_vel = self._steer_ang_vel
                     speed = self._speed
                     accel = self._accel

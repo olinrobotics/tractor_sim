@@ -80,7 +80,7 @@
         </noise>
       </ray>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-        <topicName>/tractor_sim/laser/scan</topicName>
+        <topicName>/scan</topicName>
         <frameName>hokuyo</frameName>
       </plugin>
     </sensor>
