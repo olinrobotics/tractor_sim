@@ -7,9 +7,9 @@ Installation:
 
 `git clone https://github.com/AmyPhung/tractor_sim.git`
 
-`cd ~/your_catkin_ws/src/tractor_sim`
+`cd ..`
 
-`sudo rosdep install *`
+`rosdep install -iry --from-paths src`
 
 `cd ~/your_catkin_ws/`
 
