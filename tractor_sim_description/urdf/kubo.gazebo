@@ -1,14 +1,8 @@
 <?xml version="1.0"?>
 
-  <!-- TODO: Put base link in correct position (in-between back tires on floor) -->
-  <!-- TODO: Make sensor macro -->
   <!-- TODO: Add meshes -->
-  <!-- TODO: Position everything relative to the base link -->
   <!-- TODO: Document dependencies -->
   <!-- TODO: Find sensor error parameters -->
-  <!-- TODO: Parameterize location of sensors -->
-  <!-- TODO: Put macros in separate file -->
-  <!-- TODO: Fix hardcoded bs in shocks -->
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <gazebo>

@@ -52,7 +52,7 @@
       <child link="${child}"/>
 
       <origin xyz="${fr_reflect * wheelbase / 2 + (wheelbase/2)}
-                   ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                   ${lr_reflect * (bwheel_dist / 2)}
                    ${(btire_dia / 2)}"/> <!-- Default: ${fr_reflect * wheelbase / 2}
                                 ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
                                 ${(wheel_travel / 2) - shock_z_offset}"-->
@@ -81,7 +81,7 @@
       <child link="${child}"/>
 
       <origin xyz="${fr_reflect * wheelbase / 2 + (wheelbase/2)}
-                   ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                   ${lr_reflect * (fwheel_dist / 2)}
                    ${(ftire_dia / 2)}"/> <!-- Default: ${fr_reflect * wheelbase / 2}
                                 ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
                                 ${(wheel_travel / 2) - shock_z_offset}"-->
@@ -104,7 +104,7 @@
   </xacro:macro>
 
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
-  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width hex_hub_depth wheel_mass">
+  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width wheel_mass">
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
       <null_inertial/>
     </link>
@@ -134,8 +134,8 @@
     <link name="${lr_prefix}_${fr_prefix}_wheel">
       <visual>
         <origin xyz="0
-                     ${lr_reflect * (axle_length - (tire_width /
-                     2 - hex_hub_depth))}
+                     ${lr_reflect * (- (tire_width /
+                     2 - (tire_width / 2)))}
                      0"/>
         <geometry>
           <cylinder radius="${tire_dia / 2}" length="${tire_width}"/>
@@ -145,8 +145,8 @@
 
       <collision>
         <origin xyz="0
-                     ${lr_reflect * (axle_length - (tire_width /
-                     2 - hex_hub_depth))}
+                     ${lr_reflect * (- (tire_width /
+                     2 - (tire_width / 2)))}
                      0"/>
         <geometry>
           <cylinder radius="${tire_dia / 2}" length="${tire_width}"/>
@@ -179,7 +179,7 @@
       <child link="${lr_prefix}_${fr_prefix}_axle_carrier"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-degrees_45}" upper="${degrees_45}"
-             effort="${servo_stall_torque}" velocity="${servo_no_load_speed}"/>
+             effort="${motor_stall_torque}" velocity="${motor_no_load_speed}"/>
     </joint>
     <transmission name="${lr_prefix}_steering_trans">
       <type>transmission_interface/SimpleTransmission</type>
@@ -197,7 +197,7 @@
     <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${ftire_dia}" tire_width="${ftire_width}"
-                 hex_hub_depth="${fhex_hub_depth}" wheel_mass="${fwheel_mass}"/>
+                 wheel_mass="${fwheel_mass}"/>
   </xacro:macro>
 
   <!-- Rear wheel -->
@@ -209,7 +209,7 @@
     <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${btire_dia}" tire_width="${btire_width}"
-                 hex_hub_depth="${bhex_hub_depth}" wheel_mass="${bwheel_mass}"/>
+                 wheel_mass="${bwheel_mass}"/>
   </xacro:macro>
 
   <xacro:macro name="sensor"
