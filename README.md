@@ -3,7 +3,7 @@ Package for simulating the Olin Robotics Lab Autonomous Tractor
 
 Installation:
 
-`cd ~/your_catkin_ws/src`
+`cd ~/catkin_ws/src`
 
 `git clone https://github.com/AmyPhung/tractor_sim.git`
 
@@ -11,13 +11,13 @@ Installation:
 
 `rosdep install -iry --from-paths src`
 
-`cd ~/your_catkin_ws/`
+`cd ~/catkin_ws/`
 
 `catkin_make`
 
 Usage:
 
-`cd ~/your_catkin_ws/src/tractor_sim`
+`cd ~/catkin_ws/src/tractor_sim`
 
 To run simulation:
 
