@@ -27,7 +27,12 @@ To run rviz:
 
 `roslaunch tractor_sim_description tractor_sim_rviz_amcl.launch`
 
-To test code (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overview):
+To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overview):
 
 `roslaunch gravl teleop.launch`
 
+`rosrun gravl DriveState DriveState.cpp`
+
+To test code:
+
+`rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
