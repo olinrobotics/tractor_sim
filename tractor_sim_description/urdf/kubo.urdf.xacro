@@ -10,51 +10,59 @@
   <xacro:property name="degrees_45" value="0.785398163"/>
   <xacro:property name="degrees_90" value="1.57079633"/>
 
+  <!-- For documentation for visual of what these parameters are, see repo -->
   <!-- chassis_length is measured along the x axis, chassis_width
        along the y axis, and chassis_height along the z axis.
-      Note: Size of chassis won't affect wheel position or function-->
+       Note: Size of chassis won't affect wheel position or function, so be
+       careful about making it too big-->
+
+  <!--Length of chassis (m) -->
   <xacro:property name="chassis_length" value="1.5"/>
+  <!--Width of chassis (m) -->
   <xacro:property name="chassis_width" value="0.3"/>
+  <!--Height of chassis (m) -->
   <xacro:property name="chassis_height" value="0.1"/>
+  <!--Mass of chassis (kg) -->
   <xacro:property name="chassis_mass" value="2.788"/>
-  <xacro:property name="chassis_offset" value=".25"/> <!-- Z Distance from ground -->
-
-  <!-- hub_dia and tire_dia are the diameters of the hub and tire,
-       respectively. hex_hub_depth is the distance that the hex hub is
-       inset from the outer edge of the tire. It is set so that each wheel
-       is a "zero offset" wheel. hex_hub_depth = tire_width / 2 -
-       axle_length. -->
-  <xacro:property name="hub_dia" value="0.09652"/> <!-- For inertia measurements -->
-
-  <xacro:property name="ftire_dia" value="0.5"/>
-  <xacro:property name="ftire_width" value="0.15"/>
-  <xacro:property name="fhex_hub_depth" value="${ftire_width / 2 - axle_length}"/> <!-- tire_width / 2 - axle_length-->
-  <xacro:property name="fwheel_mass" value="0.29"/>
-
-  <xacro:property name="btire_dia" value="0.7"/>
-  <xacro:property name="btire_width" value="0.2"/>
-  <xacro:property name="bhex_hub_depth" value="${btire_width / 2 - axle_length}"/> <!-- tire_width / 2 - axle_length-->
-  <xacro:property name="bwheel_mass" value="0.29"/>
-
-  <!-- hex_hub_dist is the distance between left and right hex hubs when
-       the shock absorbers are fully extended. axle_length is the distance
-       from a U joint to the corresponding hex hub. wheel_travel is the
-       vertical wheel travel. -->
+  <!-- Z Distance from ground (m) -->
+  <xacro:property name="chassis_offset" value=".25"/>
+  <!-- Distance from center of front tire to center of back tire measured parallel to floor (m) -->
   <xacro:property name="wheelbase" value="1.5"/>
-  <xacro:property name="hex_hub_dist" value="1.4"/> <!-- ? Default: 1.4-->
-  <xacro:property name="axle_length" value="0.3"/> <!-- ? Default: 0.3 -->
+
+  <!-- Front tire diameter (m) -->
+  <xacro:property name="ftire_dia" value="0.5"/>
+  <!-- Front tire width (m) -->
+  <xacro:property name="ftire_width" value="0.15"/>
+  <!-- Front tire mass (kg) -->
+  <xacro:property name="fwheel_mass" value="0.29"/>
+  <!-- Distance between front wheels (inner side of wheel)-->
+  <xacro:property name="fwheel_dist" value="0.8"/>
+
+  <!-- Back tire diameter (m) -->
+  <xacro:property name="btire_dia" value="0.7"/>
+  <!-- Back tire width (m) -->
+  <xacro:property name="btire_width" value="0.2"/>
+  <!-- Back tire mass (kg) -->
+  <xacro:property name="bwheel_mass" value="0.29"/>
+  <!-- Distance between back wheels (inner side of wheel)-->
+  <xacro:property name="bwheel_dist" value="0.8"/>
+
+  <!-- Other parameters - currently not used to improve simulation -->
+  <!-- Inner diameter of tire, used for inertia measurements. 0 indicates a solid cylinder -->
+  <xacro:property name="hub_dia" value="0.0"/>
+  <!-- For vehicles with suspension, this is how much the wheels can move up and down -->
   <xacro:property name="wheel_travel" value="0"/>
+  <!-- For vehicles with suspension, this sets where the suspension is mounted -->
   <xacro:property name="shock_z_offset" value="0.0655"/>
 
   <!-- shock_eff_limit is 2 * ((shock_stroke / 2) * shock_spring_constant) N.
-       shock_stroke is 0.028575 meters. shock_spring_constant, an approximation
-       of a Traxxas Ultra Shock shock absorber spring's constant, is
-       437.817 N/m. -->
-  <xacro:property name="shock_eff_limit" value="125106"/>
+       shock_stroke is 0.028575 meters. shock_spring_constant is the shock
+       absorber spring's constant in units of N/m. Currently set to arbitrary
+       high values to disable shocks behavior  -->
+  <xacro:property name="shock_eff_limit" value="1000000"/>
   <xacro:property name="shock_vel_limit" value="1000000"/>
 
-  <!-- The specifications for a Titan(R) 550 motor could not be found, so the
-       stall torque of a Mabuchi Motor(R) RS-550VC-7525 motor was used instead.
+  <!-- Sample calculations for stall torque of a Mabuchi Motor(R) RS-550VC-7525 motor
        num_spur_gear_teeth = 68
        num_pinion_gear_teeth = 19
        final_gear_ratio = (num_spur_gear_teeth / num_pinion_gear_teeth) *
@@ -68,15 +76,13 @@
   <xacro:property name="axle_eff_limit" value="512766"/>
   <xacro:property name="axle_vel_limit" value="2448696"/>
 
-  <!-- These constants are used to simulate a Traxxas 2056 servo operated at
-       6 V. servo_stall_torque is measured in N m. servo_no_load_speed is
+  <!-- motor_stall_torque is measured in N m. motor_no_load_speed is
        measured in rad/s. -->
-  <xacro:property name="servo_stall_torque" value="5649"/>
-  <xacro:property name="servo_no_load_speed" value="4553"/>
+  <xacro:property name="motor_stall_torque" value="5649"/>
+  <xacro:property name="motor_no_load_speed" value="4553"/>
 
   <xacro:property name="sensorSize" value="0.05"/> <!--TODO: Get rid of this -->
   <xacro:property name="sensorMass" value="0.1"/>
-
 
 
   <!-- base_link must have geometry so that its axes can be displayed in
@@ -96,7 +102,7 @@
   <!-- Chassis -->
   <link name="chassis">
     <visual>
-      <origin xyz="${chassis_length / 2} 0 ${chassis_offset}"/> <!--Defualt: 0 0 ${-chassis_height / 2} -->
+      <origin xyz="${chassis_length / 2} 0 ${chassis_offset}"/>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
       </geometry>
@@ -138,7 +144,8 @@
                     lr_reflect="-1" fr_reflect="-1"/>
 
   <!-- Sensors -->
-  <!-- IMU approximate
+  <!-- Sensor positions are relative to base_link
+  IMU approximate
 https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <xacro:sensor sensor_name="camera"
                 x_pos="2.08" y_pos="0" z_pos="1.04"
@@ -186,6 +193,4 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
     <child link="hokuyo"/>
   </joint>
 -->
-
-
 </robot>
