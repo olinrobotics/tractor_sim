@@ -37,7 +37,7 @@ limitations under the License.
   <!-- Vehicle pose -->
   <arg name="x" default="0.0"/>
   <arg name="y" default="0.0"/>
-  <arg name="z" default="0.1"/>
+  <arg name="z" default="3"/>
   <arg name="roll" default="0.0"/>
   <arg name="pitch" default="0.0"/>
   <arg name="yaw" default="0.0"/>
@@ -70,5 +70,6 @@ limitations under the License.
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
       <rosparam file="$(find tractor_sim_gazebo)/config/kubo_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
+
   </group>
 </launch>
