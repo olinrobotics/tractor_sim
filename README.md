@@ -16,7 +16,7 @@ To run simulation:
 + `roslaunch tractor_sim_gazebo tractor_sim.launch`
 
 To run rviz:
-+  roslaunch tractor_sim_description tractor_sim_rviz_amcl.launch`
++  `roslaunch tractor_sim_description tractor_sim_rviz_amcl.launch`
 
 To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overview):
 + `roslaunch gravl teleop.launch`
