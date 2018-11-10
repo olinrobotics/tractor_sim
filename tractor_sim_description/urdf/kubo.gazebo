@@ -10,7 +10,7 @@
   <!-- TODO: Put macros in separate file -->
   <!-- TODO: Fix hardcoded bs in shocks -->
 
-<robot>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
   </gazebo>

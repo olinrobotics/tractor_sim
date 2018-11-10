@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 
-<robot>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- Null inertial element. This is needed to make the model work with
        Gazebo. -->
-  <macro name="null_inertial">
+  <xacro:macro name="null_inertial">
     <inertial>
       <mass value="0.001"/>
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
     </inertial>
-  </macro>
+  </xacro:macro>
 
   <!-- Inertia of a solid cuboid. Width is measured along the x axis, depth
        along the y axis, and height along the z axis. -->
-  <macro name="solid_cuboid_inertial"
+  <xacro:macro name="solid_cuboid_inertial"
                params="width depth height mass *origin">
     <inertial>
-      <insert_block name="origin"/>
+      <xacro:insert_block name="origin"/>
       <mass value="${mass}"/>
       <inertia ixx="${mass * (depth * depth + height * height) / 12}"
                ixy="0" ixz="0"
@@ -23,12 +23,12 @@
                iyz="0"
                izz="${mass * (width * width + depth * depth) / 12}"/>
     </inertial>
-  </macro>
+  </xacro:macro>
 
   <!-- Inertia of a thick-walled cylindrical tube with open ends. Height is
        measured along the z axis, which is the tube's axis. inner_rad and
        outer_rad are the tube's inner and outer radii, respectively. -->
-  <macro name="thick_walled_tube_inertial"
+  <xacro:macro name="thick_walled_tube_inertial"
                params="inner_rad outer_rad height mass">
     <inertial>
       <mass value="${mass}"/>
@@ -41,11 +41,11 @@
                izz="${mass * (inner_rad * inner_rad +
                     outer_rad * outer_rad) / 2}"/>
     </inertial>
-  </macro>
+  </xacro:macro>
 
 
   <!-- Shock absorber -->
-  <macro name="bshock"
+  <xacro:macro name="bshock"
                params="lr_prefix fr_prefix lr_reflect fr_reflect child">
     <joint name="${lr_prefix}_${fr_prefix}_shock" type="prismatic">
       <parent link="chassis"/>
@@ -72,9 +72,9 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
-  </macro>
+  </xacro:macro>
 
-  <macro name="fshock"
+  <xacro:macro name="fshock"
                params="lr_prefix fr_prefix lr_reflect fr_reflect child">
     <joint name="${lr_prefix}_${fr_prefix}_shock" type="prismatic">
       <parent link="chassis"/>
@@ -101,10 +101,10 @@
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>
     </transmission>
-  </macro>
+  </xacro:macro>
 
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
-  <macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width hex_hub_depth wheel_mass">
+  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width hex_hub_depth wheel_mass">
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
       <null_inertial/>
     </link>
@@ -161,10 +161,10 @@
     <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
       <material>Gazebo/Black</material>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
   <!-- Front wheel -->
-  <macro name="front_wheel"
+  <xacro:macro name="front_wheel"
                params="lr_prefix fr_prefix lr_reflect fr_reflect">
     <fshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
@@ -198,10 +198,10 @@
                  lr_reflect="${lr_reflect}"
                  tire_dia="${ftire_dia}" tire_width="${ftire_width}"
                  hex_hub_depth="${fhex_hub_depth}" wheel_mass="${fwheel_mass}"/>
-  </macro>
+  </xacro:macro>
 
   <!-- Rear wheel -->
-  <macro name="rear_wheel"
+  <xacro:macro name="rear_wheel"
                params="lr_prefix fr_prefix lr_reflect fr_reflect">
     <bshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
@@ -210,9 +210,9 @@
                  lr_reflect="${lr_reflect}"
                  tire_dia="${btire_dia}" tire_width="${btire_width}"
                  hex_hub_depth="${bhex_hub_depth}" wheel_mass="${bwheel_mass}"/>
-  </macro>
+  </xacro:macro>
 
-  <macro name="sensor"
+  <xacro:macro name="sensor"
          params = "sensor_name x_pos y_pos z_pos x_rot y_rot z_rot">
      <link name="${sensor_name}">
        <collision>
@@ -245,6 +245,6 @@
        <child link="${sensor_name}"/>
      </joint>
 
-  </macro>
+  </xacro:macro>
 
 </robot>
