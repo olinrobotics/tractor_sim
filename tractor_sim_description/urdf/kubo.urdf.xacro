@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 
+<!-- TODO: double check parameters. If correct, then shape meshes to look better -->
+<!-- TODO: add meshes for sensors -->
+<!-- TODO: add box blade -->
 <robot name="kubo" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:include filename="$(find tractor_sim_description)/urdf/kubo.gazebo"/>
-  <xacro:include filename="$(find tractor_sim_description)/urdf/kubo_materials.urdf.xacro"/>
   <xacro:include filename="$(find tractor_sim_description)/urdf/kubo_macros.urdf.xacro"/>
 
   <!-- Degree-to-radian conversions -->
@@ -17,7 +19,7 @@
        careful about making it too big-->
 
   <!--Length of chassis (m) -->
-  <xacro:property name="chassis_length" value="1.5"/>
+  <xacro:property name="chassis_length" value="1.1"/>
   <!--Width of chassis (m) -->
   <xacro:property name="chassis_width" value="0.3"/>
   <!--Height of chassis (m) -->
@@ -27,7 +29,7 @@
   <!-- Z Distance from ground (m) -->
   <xacro:property name="chassis_offset" value=".25"/>
   <!-- Distance from center of front tire to center of back tire measured parallel to floor (m) -->
-  <xacro:property name="wheelbase" value="1.5"/>
+  <xacro:property name="wheelbase" value="1.2"/>
 
   <!-- Front tire diameter (m) -->
   <xacro:property name="ftire_dia" value="0.5"/>
@@ -92,7 +94,6 @@
       <geometry>
         <box size="0.01 0.01 0.01"/>
       </geometry>
-      <material name="chassis_mat"/>
     </visual>
   </link>
   <gazebo reference="base_link">
@@ -102,13 +103,20 @@
   <!-- Chassis -->
   <link name="chassis">
     <visual>
+      <origin xyz="${chassis_length/2} 0 0" rpy="0 0 ${2*degrees_90}" scale="1 1 1"/>
+      <geometry>
+        <mesh filename="package://tractor_sim_description/meshes/kubo_chassis.dae"/>
+      </geometry>
+    </visual>
+    <!--
+    <visual>
       <origin xyz="${chassis_length / 2} 0 ${chassis_offset}"/>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
       </geometry>
       <material name="chassis_mat"/>
     </visual>
-
+  -->
     <collision>
       <origin xyz="${chassis_length / 2} 0 ${chassis_offset}"/>
       <geometry>
@@ -123,9 +131,7 @@
     </xacro:solid_cuboid_inertial>
   </link>
 
-  <gazebo reference="chassis">
-    <material>Gazebo/Grey</material>
-  </gazebo>
+
 
   <joint name="base_link_to_chassis" type="fixed">
     <parent link="base_link"/>

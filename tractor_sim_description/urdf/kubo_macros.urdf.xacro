@@ -104,7 +104,7 @@
   </xacro:macro>
 
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
-  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width wheel_mass">
+  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width wheel_mass mesh_file">
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
       <null_inertial/>
     </link>
@@ -136,11 +136,11 @@
         <origin xyz="0
                      ${lr_reflect * (- (tire_width /
                      2 - (tire_width / 2)))}
-                     0"/>
-        <geometry>
-          <cylinder radius="${tire_dia / 2}" length="${tire_width}"/>
-        </geometry>
-        <material name="tire_mat"/>
+                     0"
+                rpy="${lr_reflect * degrees_90} 0 0"/>
+       <geometry>
+         <mesh filename="${mesh_file}"/>
+       </geometry>
       </visual>
 
       <collision>
@@ -157,10 +157,6 @@
           inner_rad="${hub_dia / 2}" outer_rad="${tire_dia / 2}"
           height="${tire_width}" mass="${wheel_mass}"/>
     </link>
-
-    <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
-      <material>Gazebo/Black</material>
-    </gazebo>
   </xacro:macro>
 
   <!-- Front wheel -->
@@ -197,7 +193,8 @@
     <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${ftire_dia}" tire_width="${ftire_width}"
-                 wheel_mass="${fwheel_mass}"/>
+                 wheel_mass="${fwheel_mass}"
+                 mesh_file = "package://tractor_sim_description/meshes/kubo_front_tire.dae"/>
   </xacro:macro>
 
   <!-- Rear wheel -->
@@ -209,7 +206,8 @@
     <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${btire_dia}" tire_width="${btire_width}"
-                 wheel_mass="${bwheel_mass}"/>
+                 wheel_mass="${bwheel_mass}"
+                 mesh_file = "package://tractor_sim_description/meshes/kubo_back_tire.dae"/>
   </xacro:macro>
 
   <xacro:macro name="sensor"
@@ -227,7 +225,6 @@
          <geometry>
            <box size="${sensorSize} ${sensorSize} ${sensorSize}"/>
          </geometry>
-         <material name="green"/>
        </visual>
 
        <inertial>
