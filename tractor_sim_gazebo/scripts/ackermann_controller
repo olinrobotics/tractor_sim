@@ -103,7 +103,6 @@ limitations under the License.
 import math
 import numpy
 import threading
-
 from math import pi
 
 import rospy
@@ -126,6 +125,9 @@ class _AckermannCtrlr(object):
         rospy.init_node("ackermann_controller")
 
         # Parameters
+        self._tractor_delay = rospy.get_param("~tractor_delay")
+        self._max_acceleration = rospy.get_param("~max_acceleration")
+        self._max_steering_angle_velocity = rospy.get_param("~max_steering_angle_velocity")
 
         # Wheels
         (left_steer_link_name, left_steer_ctrlr_name,
@@ -283,10 +285,16 @@ class _AckermannCtrlr(object):
         """
         self._last_cmd_time = rospy.get_time()
         with self._ackermann_cmd_lock:
-            self._steer_ang = ackermann_cmd.steering_angle
-            self._steer_ang_vel = ackermann_cmd.steering_angle_velocity
-            self._speed = ackermann_cmd.speed
-            self._accel = ackermann_cmd.acceleration
+            if (self._tractor_delay == 0):
+                self._steer_ang = ackermann_cmd.steering_angle
+                self._steer_ang_vel = self._max_steering_angle_velocity
+                self._speed = ackermann_cmd.speed
+                self._accel = self._max_acceleration
+            else:
+                self._steer_ang = ackermann_cmd.steering_angle
+                self._steer_ang_vel = ackermann_cmd.steering_angle_velocity
+                self._speed = ackermann_cmd.speed
+                self._accel = ackermann_cmd.acceleration
 
     def _get_front_wheel_params(self, side):
         # Get front wheel parameters. Return a tuple containing the steering

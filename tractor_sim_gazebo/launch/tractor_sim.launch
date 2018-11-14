@@ -31,8 +31,11 @@ limitations under the License.
 
 <launch>
   <arg name="namespace" default="/"/>
-  <arg name="world_name" default="worlds/empty.world"/>
+  <arg name="world_name" default="worlds/empty.world"/> <!-- TODO: add other worlds Default: worlds/empty.world -->
   <arg name="cmd_timeout" default="0.5"/>
+  <arg name="tractor_delay" default="0"/> <!-- 0 for true, 1 for false TODO: make this a bool -->
+  <arg name="max_acceleration" default="0.4"/>
+  <arg name="max_steering_angle_velocity" default="1"/>
 
   <!-- Vehicle pose -->
   <arg name="x" default="0.0"/>
@@ -48,7 +51,7 @@ limitations under the License.
 
   <group ns="$(arg namespace)">
     <!-- Create the world. -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <include file="$(find gazebo_ros)/launch/empty_world.launch"> <!-- Default: (find gazebo_ros)/launch/empty_world.launch -->
       <arg name="world_name" value="$(arg world_name)"/>
     </include>
 
@@ -68,6 +71,9 @@ limitations under the License.
     <node name="ackermann_controller" pkg="tractor_sim_gazebo"
           type="ackermann_controller">
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
+      <param name="tractor_delay" value="$(arg tractor_delay)" />
+      <param name="max_acceleration" value="$(arg max_acceleration)" />
+      <param name="max_steering_angle_velocity" value="$(arg max_steering_angle_velocity)" />
       <rosparam file="$(find tractor_sim_gazebo)/config/kubo_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
 

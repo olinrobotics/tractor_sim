@@ -29,7 +29,7 @@
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>0.0</updateRate>
-        <cameraName>tractor_sim/camera1</cameraName>
+        <cameraName>/camera</cameraName>
         <imageTopicName>image_raw</imageTopicName>
         <cameraInfoTopicName>camera_info</cameraInfoTopicName>
         <frameName>camera</frameName>
@@ -87,7 +87,7 @@
       <updateRate>4.0</updateRate>
       <bodyName>hemisphere_gps</bodyName>
       <frameId>sensor</frameId>
-      <topicName>tractor_sim/hemisphere_gps/fix</topicName>
+      <topicName>/hemisphere_gps/fix</topicName>
       <velocityTopicName>/hemisphere_gps/fix_velocity</velocityTopicName>
       <referenceLatitude>-30.06022459407145675</referenceLatitude>
       <referenceLongitude>-51.173913575780311191</referenceLongitude>
@@ -110,7 +110,7 @@
       <updateRate>4.0</updateRate>
       <bodyName>rtk_gps</bodyName>
       <frameId>sensor</frameId>
-      <topicName>tractor_sim/rtk_gps/fix</topicName>
+      <topicName>/rtk_gps/fix</topicName>
       <velocityTopicName>/rtk_gps/fix_velocity</velocityTopicName>
       <referenceLatitude>-30.06022459407145675</referenceLatitude>
       <referenceLongitude>-51.173913575780311191</referenceLongitude>
@@ -133,7 +133,7 @@
     <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <bodyName>imu</bodyName>
-      <topicName>tractor_sim/imu</topicName>
+      <topicName>/imu</topicName>
       <serviceName>imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
       <updateRate>20.0</updateRate>
