@@ -1,5 +1,5 @@
 # tractor_sim
-Package for simulating the Olin Robotics Lab Autonomous Tractor
+Package for simulating the Olin Robotics Lab Autonomous Tractor. For further project information, see the GRAVL main repository wiki: ([link](https://github.com/olinrobotics/gravl/wiki))
 
 Installation:
 + `cd ~/catkin_ws/src`
