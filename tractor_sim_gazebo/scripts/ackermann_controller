@@ -110,6 +110,7 @@ import tf
 
 from ackermann_msgs.msg import AckermannDrive
 from std_msgs.msg import Float64
+from std_msgs.msg import Bool
 from controller_manager_msgs.srv import ListControllers
 
 
@@ -128,6 +129,7 @@ class _AckermannCtrlr(object):
         self._tractor_delay = rospy.get_param("~tractor_delay")
         self._max_acceleration = rospy.get_param("~max_acceleration")
         self._max_steering_angle_velocity = rospy.get_param("~max_steering_angle_velocity")
+        #self._tractor_estop = rospy.get_param("~tractor_estop")
 
         # Wheels
         (left_steer_link_name, left_steer_ctrlr_name,
@@ -229,7 +231,11 @@ class _AckermannCtrlr(object):
         self._ackermann_cmd_sub = \
             rospy.Subscriber("/drive", AckermannDrive, #Changed from ackermann_cmd
                              self.ackermann_cmd_cb, queue_size=1)
-
+        #self._ackermann_cmd_pub = \
+        #    rospy.Publisher("/drive", AckermannDrive, queue_size=1)
+        self._softestop_sub = \
+            rospy.Subscriber("/softestop", Bool,
+                             self.softestop_cb, queue_size=1)
 
 
     def spin(self):
@@ -250,7 +256,7 @@ class _AckermannCtrlr(object):
                 steer_ang_changed, center_y = \
                     self._ctrl_steering(self._last_steer_ang, 0.0, 0.001)
                 self._ctrl_axles(0.0, 0.0, 0.0, steer_ang_changed, center_y)
-            el"""
+            """
             if delta_t > 0.0:
                 with self._ackermann_cmd_lock:
                     steer_ang = self._steer_ang*(3.14/180) # convert from degrees to rad
@@ -295,6 +301,10 @@ class _AckermannCtrlr(object):
                 self._steer_ang_vel = ackermann_cmd.steering_angle_velocity
                 self._speed = ackermann_cmd.speed
                 self._accel = ackermann_cmd.acceleration
+
+    #TODO: Make this work
+    def softestop_cb(self, softestop):
+        softestop
 
     def _get_front_wheel_params(self, side):
         # Get front wheel parameters. Return a tuple containing the steering
