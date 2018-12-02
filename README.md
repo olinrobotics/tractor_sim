@@ -24,3 +24,9 @@ To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overvi
 
 To test code:
 + `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
+
+
+### Parameters
++ **tractor_delay** - either 0 or 1. If set to 1, then tractor will react instantaneously to commands. If set to 1, the tractor will simulate the delayed response time of the real tractor (Default: 1)
++ **max_acceleration** - maximum acceleration for the tractor Note: only works when tractor_delay is 0 (Default: 0.4)
++ **max_steering_angle_velocity** - maximum steering velocity Note: only works when tractor_delay is set to 0 (Default: 1)
