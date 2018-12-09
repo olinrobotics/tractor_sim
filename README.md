@@ -20,7 +20,7 @@ To run rviz:
 
 To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overview):
 + `roslaunch gravl teleop.launch`
-+ `rosrun gravl DriveState DriveState.cpp`
++ `roslaunch gravl mainstate.launch`
 
 To test code:
 + `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
