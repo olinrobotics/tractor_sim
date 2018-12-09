@@ -200,6 +200,7 @@ class _AckermannCtrlr(object):
         self._left_rear_ang_vel = 0.0
         self._right_rear_ang_vel = 0.0
 
+        self._estop = False
         # _joint_dist_div_2 is the distance between the steering joints,
         # divided by two.
         tfl = tf.TransformListener()
@@ -232,17 +233,14 @@ class _AckermannCtrlr(object):
 
         self._ackermann_cmd_sub = \
             rospy.Subscriber("/cmd_vel", AckermannDrive, #Changed from ackermann_cmd
-                             self.ackermann_cmd_cb, queue_size=1)
-        #self._ackermann_cmd_pub = \
-        #    rospy.Publisher("/drive", AckermannDrive, queue_size=1)
+                             self._ackermann_cmd_cb, queue_size=1)
         self._softestop_sub = \
             rospy.Subscriber("/softestop", Bool,
-                             self.softestop_cb, queue_size=1)
+                             self._softestop_cb, queue_size=1)
 
 
     def spin(self):
         """Control the vehicle."""
-
         last_time = rospy.get_time()
 
         while not rospy.is_shutdown():
@@ -259,14 +257,22 @@ class _AckermannCtrlr(object):
                     self._ctrl_steering(self._last_steer_ang, 0.0, 0.001)
                 self._ctrl_axles(0.0, 0.0, 0.0, steer_ang_changed, center_y)
             """
+
+
             if delta_t > 0.0:
                 with self._ackermann_cmd_lock:
-                    steer_ang = self._steer_ang*(3.14/180) # convert from degrees to rad
-                    steer_ang_vel = self._steer_ang_vel
-                    speed = self._speed
-                    accel = self._accel
+                    if self._estop == True:
+                        steer_ang = 0
+                        steer_ang_vel = 0
+                        speed = 0
+                        accel = 0
+                    else:
+                        steer_ang = self._steer_ang*(3.14/180) # convert from degrees to rad
+                        steer_ang_vel = self._steer_ang_vel
+                        speed = self._speed
+                        accel = self._accel
                 steer_ang_changed, center_y = \
-                    self._ctrl_steering(steer_ang, steer_ang_vel, delta_t)
+                self._ctrl_steering(steer_ang, steer_ang_vel, delta_t)
                 self._ctrl_axles(speed, accel, delta_t, steer_ang_changed,
                                  center_y)
 
@@ -285,7 +291,7 @@ class _AckermannCtrlr(object):
 
             self._sleep_timer.sleep()
 
-    def ackermann_cmd_cb(self, ackermann_cmd):
+    def _ackermann_cmd_cb(self, ackermann_cmd):
         """Ackermann driving command callback
         :Parameters:
           ackermann_cmd : ackermann_msgs.msg.AckermannDrive
@@ -305,8 +311,8 @@ class _AckermannCtrlr(object):
                 self._accel = ackermann_cmd.acceleration
 
     #TODO: Make this work
-    def softestop_cb(self, softestop):
-        softestop
+    def _softestop_cb(self, softestop):
+        self._estop = softestop.data
 
     def _get_front_wheel_params(self, side):
         # Get front wheel parameters. Return a tuple containing the steering
