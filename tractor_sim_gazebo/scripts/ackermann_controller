@@ -10,9 +10,11 @@ changed subscribed topic
 """ackermann_controller
 Control the wheels of a vehicle with Ackermann steering.
 Subscribed Topics:
-    ackermann_cmd (ackermann_msgs/AckermannDrive)
+    cmd_vel (ackermann_msgs/AckermannDrive)
         Ackermann command. It contains the vehicle's desired speed and steering
         angle.
+
+    softestop (std_msgs/Bool)
 Published Topics:
     <left steering controller name>/command (std_msgs/Float64)
         Command for the left steering controller.
@@ -229,7 +231,7 @@ class _AckermannCtrlr(object):
             _create_axle_cmd_pub(list_ctrlrs, right_rear_axle_ctrlr_name)
 
         self._ackermann_cmd_sub = \
-            rospy.Subscriber("/drive", AckermannDrive, #Changed from ackermann_cmd
+            rospy.Subscriber("/cmd_vel", AckermannDrive, #Changed from ackermann_cmd
                              self.ackermann_cmd_cb, queue_size=1)
         #self._ackermann_cmd_pub = \
         #    rospy.Publisher("/drive", AckermannDrive, queue_size=1)
