@@ -171,7 +171,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 0
+      Max Intensity: 999999
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: LaserScan
@@ -235,7 +235,7 @@ Visualization Manager:
     - Class: rviz/Camera
       Enabled: true
       Image Rendering: background and overlay
-      Image Topic: /tractor_sim/camera1/image_raw
+      Image Topic: /camera/image_raw
       Name: Camera
       Overlay Alpha: 0.5
       Queue Size: 2
@@ -314,5 +314,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 958
-  X: 147
-  Y: 72
+  X: 960
+  Y: 24
