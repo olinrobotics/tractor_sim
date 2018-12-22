@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<package>
+  <name>tractor_sim</name>
+  <version>0.1.0</version>
+  <description>
+    tractor_sim contains a group of packages for simulating Olin College's
+    robotic tractor
+  </description>
+  <maintainer email="amy.phung@students.olin.edu">
+    Amy Phung
+  </maintainer>
+
+  <license>Apache 2.0</license>
+  <!--
+    Derivative from https://github.com/jbpassot/ackermann_vehicle
+
+    Copyright (c) 2011-2013 Wunderkammer Laboratory
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+
+  <url type="website">https://github.com/olinrobotics/gravl/wiki/Gazebo-Simulation</url>
+  <url type="repository">https://github.com/olinrobotics/tractor_sim</url>
+
+  <author email="amy.phung@students.olin.edu">Amy Phung</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>tractor_sim_description</run_depend>
+  <run_depend>tractor_sim_gazebo</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>
