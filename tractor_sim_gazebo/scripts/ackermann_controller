@@ -13,8 +13,10 @@ Subscribed Topics:
     cmd_vel (ackermann_msgs/AckermannDrive)
         Ackermann command. It contains the vehicle's desired speed and steering
         angle.
-
-    softestop (std_msgs/Bool)
+    /softestop (std_msgs/Bool)
+        Estop command. Abruptly stops tractor when estopped.
+    /state_controller/cmd_activate (std_msgs/Bool)
+        Activate command. Sends stop command to tractor upon disactivation.
 Published Topics:
     <left steering controller name>/command (std_msgs/Float64)
         Command for the left steering controller.
@@ -131,7 +133,6 @@ class _AckermannCtrlr(object):
         self._tractor_delay = rospy.get_param("~tractor_delay")
         self._max_acceleration = rospy.get_param("~max_acceleration")
         self._max_steering_angle_velocity = rospy.get_param("~max_steering_angle_velocity")
-        #self._tractor_estop = rospy.get_param("~tractor_estop")
 
         # Wheels
         (left_steer_link_name, left_steer_ctrlr_name,
@@ -201,6 +202,8 @@ class _AckermannCtrlr(object):
         self._right_rear_ang_vel = 0.0
 
         self._estop = False
+        self._cmd_activate = False
+
         # _joint_dist_div_2 is the distance between the steering joints,
         # divided by two.
         tfl = tf.TransformListener()
@@ -237,6 +240,9 @@ class _AckermannCtrlr(object):
         self._softestop_sub = \
             rospy.Subscriber("/softestop", Bool,
                              self._softestop_cb, queue_size=1)
+        self._cmd_activate_sub = \
+            rospy.Subscriber("/state_controller/cmd_activate", Bool,
+                             self._cmd_activate_cb, queue_size=1)
 
 
     def spin(self):
@@ -261,12 +267,17 @@ class _AckermannCtrlr(object):
 
             if delta_t > 0.0:
                 with self._ackermann_cmd_lock:
-                    if self._estop == True:
+                    if self._estop == True: # Abruptly stop when estopped (simulate engine shut off)
                         steer_ang = 0
                         steer_ang_vel = 0
                         speed = 0
                         accel = 0
-                    else:
+                    elif self._cmd_activate == False: # Slow tractor to a stop (simulate disactivate command)
+                        steer_ang = 0
+                        steer_ang_vel = self._steer_ang_vel
+                        speed = 0
+                        accel = self._accel
+                    else: # If not estopped or disactivated, run tractor
                         steer_ang = self._steer_ang*(3.14/180) # convert from degrees to rad
                         steer_ang_vel = self._steer_ang_vel
                         speed = self._speed
@@ -310,9 +321,11 @@ class _AckermannCtrlr(object):
                 self._speed = ackermann_cmd.speed
                 self._accel = ackermann_cmd.acceleration
 
-    #TODO: Make this work
     def _softestop_cb(self, softestop):
         self._estop = softestop.data
+
+    def _cmd_activate_cb(self, cmd_activate):
+        self._cmd_activate = cmd_activate.data
 
     def _get_front_wheel_params(self, side):
         # Get front wheel parameters. Return a tuple containing the steering
