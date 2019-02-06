@@ -1,6 +1,7 @@
 # tractor_sim
 Package for simulating the Olin Robotics Lab Autonomous Tractor. For further project information, see the GRAVL main repository wiki: ([link](https://github.com/olinrobotics/gravl/wiki))
 
+## Setup
 Dependencies:
 + [GRAVL](https://github.com/olinrobotics/gravl)
 + Follow setup instructions on the GRAVL wiki if you haven't already ([reference](https://github.com/olinrobotics/gravl/wiki))
@@ -13,7 +14,11 @@ Installation:
 + `cd ~/catkin_ws/`
 + `catkin_make`
 
+To use the models included in this repo, copy the contents of the folder to `~/.gazebo/models`
++ `cd ~/catkin_ws/src/tractor_sim/models`
++ `cp -R . ~/.gazebo/models`
 
+## Usage
 To run simulation:
 + `roslaunch gravl simulation.launch`
 
