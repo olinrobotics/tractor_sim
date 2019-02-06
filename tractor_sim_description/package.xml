@@ -11,12 +11,10 @@
   </maintainer>
   <license>Apache 2.0</license>
 
-<!--CHANGE LATER-->
-  <url type="website">http://wiki.ros.org/ackermann_vehicle_description</url>
-  <url type="bugtracker">https://github.com/wunderkammer-laboratory/ackermann_vehicle/issues</url>
-  <url type="repository">https://github.com/wunderkammer-laboratory/ackermann_vehicle.git</url>
+  <url type="website">https://github.com/olinrobotics/gravl/wiki/Gazebo-Simulation</url>
+  <url type="repository">https://github.com/olinrobotics/tractor_sim</url>
 
-  <author email="jim.rothrock@wunderkammerlab.com">Jim Rothrock</author>
+  <author email="amy.phung@students.olin.edu">Amy Phung</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 

@@ -1,6 +1,10 @@
 # tractor_sim
 Package for simulating the Olin Robotics Lab Autonomous Tractor. For further project information, see the GRAVL main repository wiki: ([link](https://github.com/olinrobotics/gravl/wiki))
 
+Dependencies:
++ [GRAVL](https://github.com/olinrobotics/gravl)
++ Follow setup instructions on the GRAVL wiki if you haven't already ([reference](https://github.com/olinrobotics/gravl/wiki))
+
 Installation:
 + `cd ~/catkin_ws/src`
 + `git clone https://github.com/AmyPhung/tractor_sim.git`
@@ -9,11 +13,9 @@ Installation:
 + `cd ~/catkin_ws/`
 + `catkin_make`
 
-Usage:
-+ `cd ~/catkin_ws/src/tractor_sim`
 
 To run simulation:
-+ `roslaunch tractor_sim_gazebo tractor_sim.launch`
++ `roslaunch gravl simulation.launch`
 
 To run rviz:
 +  `roslaunch tractor_sim_description tractor_sim_rviz_amcl.launch`
@@ -24,7 +26,6 @@ To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overvi
 
 To test code:
 + `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
-
 
 ### Parameters
 + **tractor_delay** - either 0 or 1. If set to 1, then tractor will react instantaneously to commands. If set to 1, the tractor will simulate the delayed response time of the real tractor (Default: 1)
