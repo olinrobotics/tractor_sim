@@ -158,7 +158,8 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
                 x_rot="0" y_rot="0" z_rot="0"/>
   <xacro:sensor sensor_name="hokuyo"
                 x_pos="2.02" y_pos="0" z_pos="1.19"
-                x_rot="0" y_rot="0.157" z_rot="0"/>
+                x_rot="0" y_rot="1.5" z_rot="0"/> <!-- testing downward LiDar -->
+                <!-- x_rot="0" y_rot="0.157" z_rot="0" -->
   <xacro:sensor sensor_name="imu"
                 x_pos="-0.3" y_pos="0" z_pos="1"
                 x_rot="0" y_rot="0" z_rot="0"/>
