@@ -29,6 +29,9 @@ To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overvi
 + `roslaunch gravl teleop.launch`
 + `roslaunch gravl mainstate.launch`
 
+To setup localization:
++ `roslaunch gravl localization.launch`
+
 To test code:
 + `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
 
