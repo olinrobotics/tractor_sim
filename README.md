@@ -25,6 +25,13 @@ To run simulation:
 To run rviz:
 +  `roslaunch tractor_sim_description tractor_sim_rviz_amcl.launch`
 
+To test code:
++ `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
+
+If these throw errors, you can run indivisual pieces of the simulation to just test what you need.
+To run simulation (without teleop or any code running)
++ `roslaunch tractor_sim_gazebo tractor_sim.launch`
+
 To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overview):
 + `roslaunch gravl teleop.launch`
 + `roslaunch gravl mainstate.launch`
@@ -32,8 +39,6 @@ To run teleop (following https://github.com/olinrobotics/gravl/wiki/Kubo:-Overvi
 To setup localization:
 + `roslaunch gravl localization.launch`
 
-To test code:
-+ `rosrun gravl yourscript.py` (ex: `rosrun gravl LidarFollower.py`)
 
 ### Parameters
 + **tractor_delay** - either 0 or 1. If set to 1, then tractor will react instantaneously to commands. If set to 1, the tractor will simulate the delayed response time of the real tractor (Default: 1)
