@@ -110,10 +110,10 @@
   <gazebo>
     <plugin name="gazebo_ros_gps" filename="libhector_gazebo_ros_gps.so">
       <updateRate>4.0</updateRate>
-      <bodyName>rtk_gps</bodyName>
+      <bodyName>gps</bodyName>
       <frameId>sensor</frameId>
-      <topicName>/rtk_gps/fix</topicName>
-      <velocityTopicName>/rtk_gps/fix_velocity</velocityTopicName>
+      <topicName>/gps/fix</topicName>
+      <velocityTopicName>/gps/fix_velocity</velocityTopicName>
       <referenceLatitude>-30.06022459407145675</referenceLatitude>
       <referenceLongitude>-51.173913575780311191</referenceLongitude>
       <referenceHeading>90</referenceHeading>
@@ -135,7 +135,7 @@
     <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <bodyName>imu</bodyName>
-      <topicName>/imu</topicName>
+      <topicName>/imu/data</topicName> <!-- changed to match gravl -->
       <serviceName>imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
       <updateRate>20.0</updateRate>
