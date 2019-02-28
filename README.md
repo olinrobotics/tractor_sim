@@ -20,7 +20,7 @@ To use the models included in this repo, copy the contents of the folder to `~/.
 
 ## Usage
 To run simulation:
-+ `roslaunch tractor_sim_gazebo simulation.launch`
++ `roslaunch tractor_sim_gazebo tractor_sim.launch`
 + `roslaunch gravl mainstate.launch`
 + `roslaunch gravl teleop.launch`
 
