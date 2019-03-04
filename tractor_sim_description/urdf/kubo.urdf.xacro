@@ -139,6 +139,39 @@
   </joint>
 
 
+  <!-- Hitch -->
+  <link name="hitch">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${degrees_90} ${2*degrees_90}" scale="1 1 1"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <!-- <geometry>
+        <mesh filename="package://tractor_sim_description/meshes/kubo_chassis.dae"/>
+      </geometry> -->
+    </visual>
+
+    <xacro:solid_cuboid_inertial
+        width="${chassis_length}" depth="${chassis_width}"
+        height="${chassis_height}" mass="${chassis_mass}">
+      <origin xyz="0 0 ${-chassis_height / 2}"/>
+    </xacro:solid_cuboid_inertial>
+  </link>
+
+
+
+  <joint name="base_link_to_hitch" type="prismatic">
+    <parent link="base_link"/>
+    <child link="hitch"/>
+    <limit effort="1000.0" lower="-0.38" upper="0" velocity="0.5"/>
+    <origin xyz="0 0 0" rpy="0 ${degrees_90} 0"/>
+  </joint>
+
+
+
+
+
+
   <!-- Wheels -->
   <xacro:front_wheel lr_prefix="left" fr_prefix="front"
                      lr_reflect="1" fr_reflect="1"/>
@@ -201,4 +234,6 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
     <child link="hokuyo"/>
   </joint>
 -->
+
+
 </robot>

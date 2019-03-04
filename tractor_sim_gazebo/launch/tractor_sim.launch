@@ -67,6 +67,8 @@ limitations under the License.
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
           args="$(find tractor_sim_gazebo)/config/kubo_joint_ctrlr_params.yaml"/>
 
+
+
     <!-- Control the steering, axle, and shock absorber joints. -->
     <node name="ackermann_controller" pkg="tractor_sim_gazebo"
           type="ackermann_controller">
@@ -78,4 +80,12 @@ limitations under the License.
     </node>
 
   </group>
+
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob_st_pub" >
+    <!-- <remap from="robot_description" to="different_robot_description" />
+    <remap from="joint_states" to="different_joint_states" /> -->
+  </node>
+
+
 </launch>
