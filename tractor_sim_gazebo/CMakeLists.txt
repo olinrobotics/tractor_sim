@@ -23,3 +23,19 @@ catkin_install_python(PROGRAMS scripts/ackermann_controller
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(DIRECTORY config launch
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+find_package(roscpp REQUIRED)
+find_package(std_msgs REQUIRED)
+include_directories(${roscpp_INCLUDE_DIRS})
+include_directories(${std_msgs_INCLUDE_DIRS})
+find_package(gazebo REQUIRED)
+include_directories(${GAZEBO_INCLUDE_DIRS})
+link_directories(${GAZEBO_LIBRARY_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+
+add_library(hitch_plugin SHARED scripts/hitch_plugin.cc)
+target_link_libraries(hitch_plugin ${GAZEBO_LIBRARIES})
+target_link_libraries(hitch_plugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
+
+add_executable(hitch scripts/hitch.cc)
+target_link_libraries(hitch ${GAZEBO_LIBRARIES})
