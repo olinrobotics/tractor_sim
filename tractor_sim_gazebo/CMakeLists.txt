@@ -36,6 +36,3 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 add_library(hitch_plugin SHARED scripts/hitch_plugin.cc)
 target_link_libraries(hitch_plugin ${GAZEBO_LIBRARIES})
 target_link_libraries(hitch_plugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
-
-add_executable(hitch scripts/hitch.cc)
-target_link_libraries(hitch ${GAZEBO_LIBRARIES})
