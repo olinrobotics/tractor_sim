@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<!-- bringup_min.launch
+Use Gazebo to simulate a tractor with a three-point hitch attachment.
+
+No external dependencies required to use
+-->
+<launch>
+  <include file="$(find tractor_sim_gazebo)/launch/tractor_sim.launch"/>
+  <include file="$(find tractor_sim_gazebo)/launch/hitch.launch"/>
+</launch>

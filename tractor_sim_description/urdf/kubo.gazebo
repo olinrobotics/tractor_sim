@@ -141,4 +141,10 @@
       <updateRate>20.0</updateRate>
     </plugin>
   </gazebo>
+
+  <gazebo>
+    <plugin name="hitch_control" filename="libhitch_plugin.so">
+    </plugin>
+  </gazebo>
+
 </robot>
