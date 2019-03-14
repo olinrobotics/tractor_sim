@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<!-- hitch.launch
+Launch hitch controller and gazebo link pose publisher
+
+No external dependencies required to use
+-->
+
+<launch>
+  <node name="gazebo_link_pose" pkg="tractor_sim_gazebo"
+    type="gazebo_link_pose"/>
+  <node name="hitch_controller" pkg="tractor_sim_gazebo"
+    type="hitch_controller"/>
+</launch>
