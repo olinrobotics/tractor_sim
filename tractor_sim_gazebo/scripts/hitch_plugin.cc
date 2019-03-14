@@ -50,7 +50,7 @@ namespace gazebo
       #endif
 
       // Create a topic name
-      std::string topicName = "/hitch_force";
+      std::string topicName = "/hitch_height";
 
       // Subscribe to the topic, and register a callback
       this->sub = this->node->Subscribe(topicName,
@@ -73,7 +73,7 @@ namespace gazebo
      // Create a named topic, and subscribe to it.
      ros::SubscribeOptions so =
        ros::SubscribeOptions::create<std_msgs::Float32>(
-           "/hitch_force",
+           "/hitch_velocity",
            1,
            boost::bind(&HitchPlugin::OnRosMsg, this, _1),
            ros::VoidPtr(), &this->rosQueue);
@@ -89,7 +89,7 @@ namespace gazebo
     /// of the Velodyne.
     public: void OnRosMsg(const std_msgs::Float32ConstPtr &_msg)
     {
-      this->SetHitchForce(_msg->data);
+      this->SetHitchVelocity(_msg->data);
     }
 
     /// \brief ROS helper function that processes messages
@@ -102,9 +102,9 @@ namespace gazebo
       }
     }
 
-    public: void SetHitchForce(const double &_vel)
+    public: void SetHitchVelocity(const double &_vel)
     {
-      this->joint->SetForce(0,_vel); // axis 0, 10000 force
+      this->joint->SetVelocity(0,_vel); // y axis, _vel
     }
 
     /// \brief Handle incoming message
@@ -112,7 +112,7 @@ namespace gazebo
     /// only use the x component.
     private: void OnMsg(ConstVector3dPtr &_msg)
     {
-      this->SetHitchForce(_msg->x());
+      this->SetHitchVelocity(_msg->x());
     }
 
     /// \brief Pointer to the model.

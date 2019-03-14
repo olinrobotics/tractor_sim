@@ -3,169 +3,69 @@
 import rospy
 import threading
 from geometry_msgs.msg import Point
-from gazebo_msgs.msg import LinkState
+from geometry_msgs.msg import Pose
+from std_msgs.msg import Float32
 
-class _HitchCtrlr():
+class _HitchCtrlr:
     def __init__(self):
         """Initialize this _HitchCtrlr"""
 
         rospy.init_node("hitch_controller")
 
-        # Publishing frequency
-        try:
-            pub_freq = float(rospy.get_param("~publishing_frequency",
-                                             self._DEF_PUB_FREQ))
-            if pub_freq <= 0.0:
-                raise ValueError()
-        except:
-            rospy.logwarn("The specified publishing frequency is invalid. "
-                          "The default frequency will be used instead.")
-            pub_freq = self._DEF_PUB_FREQ
-
-
-        self._sleep_timer = rospy.Rate(pub_freq)
-
-        self._hitch_cmd_lock = threading.Lock()
-        self._hitch_height = 0;
-
         # Publishers and subscribers
-        self._sim_hitch_cmd_pub = \
-            rospy.Publisher("/gazebo/set_link_state", LinkState, queue_size=1)
-
+        self._base_link_sub = \
+            rospy.Subscriber("/gazebo/tractor_sim_base_link", Pose,
+                             self._base_link_cb, queue_size=1)
+        self._hitch_sub = \
+            rospy.Subscriber("/gazebo/tractor_sim_hitch", Pose,
+                             self._hitch_cb, queue_size=1)
         self._hitch_cmd_sub = \
             rospy.Subscriber("/hitch_cmd", Point,
                              self._hitch_cmd_cb, queue_size=1)
+        self._hitch_vel_pub = \
+            rospy.Publisher("/hitch_velocity", Float32, queue_size=1)
+
+        self._pub_freq = 100;
+        self._sleep_timer = rospy.Rate(self._pub_freq)
+
+        #TODO: Make height more accurate (use trig + full msg, not just z)
+        self._base_link_pose = 0;
+        self._hitch_pose = 0;
+        self._hitch_cmd = 0;
 
 
     def spin(self):
         """Control the hitch"""
-        last_time = rospy.get_time()
-
         while not rospy.is_shutdown():
-            t = rospy.get_time()
-            delta_t = t - last_time
-            last_time = t
+            hitch_vel = \
+                self._ctrl_hitch(self._hitch_cmd, self._hitch_pose,
+                                 self._base_link_pose)
 
-            if delta_t > 0.0:
-                with self._hitch_cmd_lock:
-                    # if self._estop == True: # Abruptly stop when estopped (simulate engine shut off)
-                    #     steer_ang = 0
-                    #     steer_ang_vel = 0
-                    #     speed = 0
-                    #     accel = 0
-                    # elif self._cmd_activate == False: # Slow tractor to a stop (simulate disactivate command)
-                    #     steer_ang = 0
-                    #     steer_ang_vel = self._steer_ang_vel
-                    #     speed = 0
-                    #     accel = self._accel
-                    # else: # If not estopped or disactivated, run tractor
-                    hitch_height = self._hitch_height
-                    hitch_cmd = self._ctrl_hitch(hitch_height)
-                    # Publish the hitch joint command
-                    self._sim_hitch_cmd_pub.publish(hitch_cmd)
+            # Publish the hitch force command
+            self._hitch_vel_pub.publish(hitch_vel)
 
             self._sleep_timer.sleep()
 
+
+
+    def _base_link_cb(self, base_link_pose):
+        self._base_link_pose = base_link_pose.position.z
+
+    def _hitch_cb(self, hitch_pose):
+        self._hitch_pose = hitch_pose.position.z
+
     def _hitch_cmd_cb(self, hitch_cmd):
-        with self._hitch_cmd_lock:
-            self._hitch_height = hitch_cmd.z
+        self._hitch_cmd = hitch_cmd.x
 
-    def _ctrl_hitch(self, hitch_height):
-        hitch_cmd = LinkState()
-        hitch_cmd.link_name = "tractor_sim::hitch"
-        hitch_cmd.pose.position.z = hitch_height
-        hitch_cmd.reference_frame = "base_link"
+    def _ctrl_hitch(self, hitch_cmd, hitch_pose, base_link_pose):
 
-        return hitch_cmd
+        curr_height = hitch_pose - base_link_pose
 
-    _DEF_PUB_FREQ = 30.0    # Default publishing frequency. Unit: hertz.
+        hitch_velocity = Float32()
+        hitch_velocity.data = (hitch_cmd-curr_height)*-2
+        return hitch_velocity
+
 
 if __name__ == '__main__':
     hitch_ctlr = _HitchCtrlr()
     hitch_ctlr.spin()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""easy_install pygazebo"""
-
-
-
-
-
-
-# import trollius
-# from trollius import From
-#
-# import pygazebo
-# import pygazebo.msg.joint_cmd_pb2
-#
-# @trollius.coroutine
-# def publish_loop():
-#     manager = yield From(pygazebo.connect())
-#
-#     publisher = yield From(
-#         manager.advertise('/gazebo/default/model/joint_cmd',
-#                           'gazebo.msgs.JointCmd'))
-#
-#     message = pygazebo.msg.joint_cmd_pb2.JointCmd()
-#     message.name = 'tractor_sim::hitch'
-#     message.axis = 0
-#     message.force = -200.0
-#
-#     while True:
-#         yield From(publisher.publish(message))
-#         yield From(trollius.sleep(1.0))
-#
-# loop = trollius.get_event_loop()
-# loop.run_until_complete(publish_loop())
-
-"""
-get point of base link
-get point of hitch
-do trig to get height
-send force commands to link proportional to distance
-
-Subscribed to:
-hitch height (gravl)
-base link pose (sim)
-hitch pose (sim)
-
-
-
-
-
-# How to apply forces (need to convert from c++)
-
-gazebo::physics::LinkPtr link=  _model->GetChildLink("Path::to::Link");
-link->AddForce(gazebo::math::Vector3(x, y, z)); //for global force
-link->AddRelativeForce(math::Vector3(x, y, z)); // for relative force depends on actual pose and angular
-
-
-# How to get states
-from gazebo_msgs.srv import GetLinkState
-from gazebo_msgs.msg import LinkState # For getting information about link states
-
-model_info_prox = rospy.ServiceProxy('/gazebo/get_link_state', GetLinkState)
-rospy.wait_for_service('/gazebo/get_link_state')
-print "Link 7 Pose:"    , endl , model_info_prox( "lbr4_allegro::lbr4_7_link" , "world" )
-"""
