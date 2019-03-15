@@ -55,7 +55,7 @@ class _HitchCtrlr:
         self._hitch_pose = hitch_pose.position.z
 
     def _hitch_cmd_cb(self, hitch_cmd):
-        self._hitch_cmd = hitch_cmd.x
+        self._hitch_cmd = hitch_cmd.z
 
     def _ctrl_hitch(self, hitch_cmd, hitch_pose, base_link_pose):
 
