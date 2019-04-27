@@ -27,7 +27,7 @@ To run simulation:
 
 ## ROS Topics
 + `/cmd_vel` - twist command for driving the tractor
-+ `/hitch_cmd` - point command for setting height of box blade (use z value)
++ `/cmd_hitch` - pose command for setting height of box blade [(reference)](https://github.com/olinrobotics/state_controller/blob/master/README.md)
 
 #### Sensor Topics
 + `/camera/image_raw` - camera feed
