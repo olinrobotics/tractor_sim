@@ -163,8 +163,8 @@
   <joint name="base_link_to_hitch" type="prismatic">
     <parent link="base_link"/>
     <child link="hitch"/>
-    <limit effort="10" lower="-0.25" upper="0.1" velocity="0.1"/>
-    <origin xyz="-0.5 0 0.1" rpy="0 ${degrees_90} 0"/>
+    <limit effort="10" lower="-1" upper="1" velocity="0.1"/>
+    <origin xyz="-0.5 0 -0.3" rpy="0 ${degrees_90} 0"/>
   </joint>
 
 
