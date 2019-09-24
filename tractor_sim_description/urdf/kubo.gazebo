@@ -6,7 +6,9 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
   </gazebo>
 
   <!-- camera -->
