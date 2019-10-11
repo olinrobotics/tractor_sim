@@ -9,7 +9,7 @@ Requires packages found at https://github.com/olinrobotics/tractor_sim_packages
 
 <launch>
   <include file="$(find tractor_sim_gazebo)/launch/bringup_min.launch"/>
-  <include file="$(find tractor_sim_gazebo)/launch/sim_odometry.launch"/>
+  <!-- <include file="$(find tractor_sim_gazebo)/launch/sim_odometry.launch"/> -->
   <include file="$(find tractor_sim_description)/launch/tractor_sim_rviz.launch"/>
   <include file="$(find gravl)/launch/mainstate.launch"/>
   <include file="$(find gravl)/launch/teleop.launch"/>
