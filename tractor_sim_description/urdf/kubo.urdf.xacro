@@ -190,9 +190,13 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <xacro:sensor sensor_name="camera"
                 x_pos="2.08" y_pos="0" z_pos="1.04"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:sensor sensor_name="hokuyo"
+  <xacro:sensor sensor_name="hokuyo-ust-10lx"
                 x_pos="2.02" y_pos="0" z_pos="1.19"
                 x_rot="0" y_rot="1.5" z_rot="0"/> <!-- testing downward LiDar -->
+                <!-- x_rot="0" y_rot="0.157" z_rot="0" -->
+  <xacro:sensor sensor_name="hokuyo-uxm-30lx-e"
+                x_pos="2.02" y_pos="0" z_pos="1.25"
+                x_rot="0" y_rot="0" z_rot="0"/> <!-- testing downward LiDar -->
                 <!-- x_rot="0" y_rot="0.157" z_rot="0" -->
   <xacro:sensor sensor_name="imu"
                 x_pos="-0.3" y_pos="0" z_pos="1"

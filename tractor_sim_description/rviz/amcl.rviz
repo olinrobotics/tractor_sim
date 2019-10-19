@@ -190,7 +190,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.0500000007
       Style: Flat Squares
-      Topic: /scan
+      Topic: /scan_ust_10lx
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
