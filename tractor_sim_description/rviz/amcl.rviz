@@ -31,7 +31,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: Camera
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -60,6 +60,16 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
+        3d_lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        3d_lidar_base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
@@ -252,6 +262,7 @@ Visualization Manager:
       Unreliable: false
       Value: true
       Visibility:
+        3dlidar: true
         Grid: true
         LaserScan: true
         Map: true

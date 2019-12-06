@@ -7,6 +7,7 @@
 
   <xacro:include filename="$(find tractor_sim_description)/urdf/kubo.gazebo"/>
   <xacro:include filename="$(find tractor_sim_description)/urdf/kubo_macros.urdf.xacro"/>
+  <xacro:include filename="$(find tractor_sim_description)/urdf/lidarx.urdf.xacro"/>
 
   <!-- Degree-to-radian conversions -->
   <xacro:property name="degrees_45" value="0.785398163"/>
@@ -187,26 +188,29 @@
   IMU approximate
 https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <!-- Make sure names match gravl localization.launch -->
-  <xacro:sensor sensor_name="camera"
+  <xacro:gravl_sensor sensor_name="camera"
                 x_pos="2.08" y_pos="0" z_pos="1.04"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:sensor sensor_name="hokuyo-ust-10lx"
+  <!--
+  <xacro:gravl_sensor sensor_name="hokuyo-ust-10lx"
                 x_pos="2.02" y_pos="0" z_pos="1.19"
-                x_rot="0" y_rot="1.5" z_rot="0"/> <!-- testing downward LiDar -->
-                <!-- x_rot="0" y_rot="0.157" z_rot="0" -->
-  <xacro:sensor sensor_name="hokuyo-uxm-30lx-e"
+                x_rot="0" y_rot="1.5" z_rot="0"/> 
+  <xacro:gravl_sensor sensor_name="hokuyo-uxm-30lx-e"
                 x_pos="2.02" y_pos="0" z_pos="1.25"
-                x_rot="0" y_rot="0" z_rot="0"/> <!-- testing downward LiDar -->
-                <!-- x_rot="0" y_rot="0.157" z_rot="0" -->
-  <xacro:sensor sensor_name="imu"
+                x_rot="0" y_rot="0" z_rot="0"/>
+  -->
+  <xacro:gravl_sensor sensor_name="imu"
                 x_pos="-0.3" y_pos="0" z_pos="1"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:sensor sensor_name="hemisphere_gps"
+  <xacro:gravl_sensor sensor_name="hemisphere_gps"
                 x_pos="1.94" y_pos="0" z_pos="1.49"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:sensor sensor_name="gps"
+  <xacro:gravl_sensor sensor_name="gps"
                 x_pos="0.3" y_pos="0" z_pos="2.21"
                 x_rot="0" y_rot="0" z_rot="0"/>
+  <xacro:lidarx name="3d_lidar" gpu="true"
+                x_pos="2.5" y_pos="0" z_pos="1.25"
+                x_rot="0" y_rot="1.5" z_rot="0"/>
   <!-- Hokuyo Laser -->
   <!-- Using mesh example
   <link name="hokuyo">
