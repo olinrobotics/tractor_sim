@@ -9,8 +9,34 @@ Requires packages found at https://github.com/olinrobotics/tractor_sim_packages
 
 <launch>
   <include file="$(find tractor_sim_gazebo)/launch/bringup_min.launch"/>
-  <include file="$(find tractor_sim_gazebo)/launch/sim_odometry.launch"/>
+  <!-- <include file="$(find tractor_sim_gazebo)/launch/sim_odometry.launch"/> -->
   <include file="$(find tractor_sim_description)/launch/tractor_sim_rviz.launch"/>
   <include file="$(find gravl)/launch/mainstate.launch"/>
   <include file="$(find gravl)/launch/teleop.launch"/>
+  <!-- <include file="$(find gravl)/launch/ekf.launch"/> -->
+
+
+
+
+  <!-- IMU orientation -->
+  <!-- <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter" output="screen">
+    <param name="world_frame" value="enu"/>
+    <param name="use_mag" value="false"/>
+    <param name="use_magnetic_field_msg" value="false"/>
+    <param name="fixed_frame" value="base_link"/>
+    <param name="publish_tf" value="false"/>
+  </node> -->
+
+  <!-- Import node to convert gps data to odom -->
+ <node name="gps_conv" pkg="gps_common" type="utm_odometry_node" output="screen">
+   <remap from="odom" to="gps_odom"/>
+   <remap from="fix" to="/piksi/navsatfix_best_fix" />
+   <param name="rot_covariance" value="99999" />
+   <param name="frame_id" value="base_link" />
+ </node>
+
+ <node name="tractor_odom" pkg="gravl" type="TractorOdom.py" output="screen">
+   <remap from="/imu/data" to="/imu/data_raw"/> <!-- Simulaation imu equivalent to data_raw -->
+ </node>
+
 </launch>

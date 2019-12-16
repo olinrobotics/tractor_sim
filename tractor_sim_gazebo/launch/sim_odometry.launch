@@ -2,8 +2,10 @@
 
 <!-- sim_odometry.launch
 Launch tractor localization packages
-
 Requires packages found at https://github.com/olinrobotics/tractor_sim_packages
+
+Theoretically "perfect" odometry - uses current gazebo position and orientation
+as odometry
 -->
 
 <launch>

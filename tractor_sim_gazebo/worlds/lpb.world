@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Asphalt road -->
+    <include>
+      <uri>model://asphalt_plane</uri>
+      <name>asphalt</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Randomly generate barrels -->
+    <population name="barrels">
+      <model name="barrel">
+        <include>
+          <static>true</static>
+          <uri>model://construction_barrel</uri>
+        </include>
+      </model>
+      <pose>0 0 0 0 0 0</pose>
+      <box>
+        <size>20 20 0.01</size>
+      </box>
+      <model_count>10</model_count>
+      <distribution>
+        <type>random</type>
+      </distribution>
+    </population>
+
+    <!-- Randomly generate cones -->
+    <population name="cones">
+      <model name="cones">
+        <include>
+          <static>true</static>
+          <uri>model://construction_cone</uri>
+        </include>
+      </model>
+      <pose>0 0 0 0 0 0</pose>
+      <box>
+        <size>20 20 0.01</size>
+      </box>
+      <model_count>10</model_count>
+      <distribution>
+        <type>random</type>
+      </distribution>
+    </population>
+
+
+  </world>
+</sdf>
