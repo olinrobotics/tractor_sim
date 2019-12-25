@@ -210,7 +210,7 @@
                  mesh_file = "package://tractor_sim_description/meshes/kubo_back_tire.dae"/>
   </xacro:macro>
 
-  <xacro:macro name="sensor"
+  <xacro:macro name="gravl_sensor"
          params = "sensor_name x_pos y_pos z_pos x_rot y_rot z_rot">
      <link name="${sensor_name}">
        <collision>

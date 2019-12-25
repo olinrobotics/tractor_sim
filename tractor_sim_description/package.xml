@@ -25,6 +25,7 @@
   <run_depend>rviz</run_depend>
   <run_depend>transmission_interface</run_depend>
   <run_depend>xacro</run_depend>
+  <run_depend>velodyne_description</run_depend>
 
   <export>
     <architecture_independent/>
