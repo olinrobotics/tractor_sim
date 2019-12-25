@@ -1,20 +1,19 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="lidarx">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="VLP-16">
   <xacro:property name="M_PI" value="3.1415926535897931" />
+  <xacro:macro name="lidarx" params="*origin parent:=base_link name:=lidarx topic:=/lidarx_points hz:=10 lasers:=16 samples:=1875 collision_range:=0.3 min_range:=0.9 max_range:=130.0 noise:=0.008 min_angle:=-${M_PI} max_angle:=${M_PI}">
 
-  <xacro:macro name="lidarx"
-        params="parent:=base_link name:=lidarx topic:=/lidarx_points hz:=10 lasers:=31 samples:=1875 collision_range:=0.3 min_range:=0.9 max_range:=130.0 noise:=0.008 min_angle:=-${M_PI} max_angle:=${M_PI} gpu:=true x_pos:=0 y_pos:=0 z_pos:=0 x_rot:=0 y_rot:=0 z_rot:=0">
-
-  <joint name="${name}_base_mount_joint" type="fixed">
-    <parent link="${parent}"/>
-    <origin xyz="${x_pos} ${y_pos} ${z_pos}" rpy="${x_rot} ${y_rot} ${z_rot}" />
-    <child link="${name}_base_link"/>
-  </joint>
+    <!-- TODO: Update specs -->
+    <joint name="${name}_base_mount_joint" type="fixed">
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}"/>
+      <child link="${name}_base_link"/>
+    </joint>
 
     <link name="${name}_base_link">
       <inertial>
         <mass value="0.83"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0.03585"/>
         <inertia ixx="${(0.83 * (3.0*0.0516*0.0516 + 0.0717*0.0717)) / 12.0}" ixy="0" ixz="0"
           iyy="${(0.83 * (3.0*0.0516*0.0516 + 0.0717*0.0717)) / 12.0}" iyz="0"
           izz="${0.5 * 0.83 * (0.0516*0.0516)}"/>
@@ -30,7 +29,7 @@
         </geometry>
       </visual>
       <collision>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="0 0 0" xyz="0 0 0.03585"/>
         <geometry>
           <cylinder radius="0.0516" length="0.0717"/>
         </geometry>
@@ -38,7 +37,8 @@
     </link>
 
     <joint name="${name}_base_scan_joint" type="fixed" >
-        <parent link="${name}_base_link" />
+      <origin xyz="0 0 0.0377" rpy="0 0 0" />
+      <parent link="${name}_base_link" />
       <child link="${name}"/>
     </joint>
 
@@ -56,8 +56,9 @@
       </visual>
     </link>
 
+    <!-- Gazebo requires the velodyne_gazebo_plugins package -->
     <gazebo reference="${name}">
-        <sensor type="gpu_ray" name="${name}-lidarx">
+        <sensor type="ray" name="${name}-lidarx">
           <pose>0 0 0 0 0 0</pose>
           <visualize>false</visualize>
           <update_rate>${hz}</update_rate>
@@ -72,8 +73,8 @@
               <vertical>
                 <samples>${lasers}</samples>
                 <resolution>1</resolution>
-                <min_angle>-${15.0*M_PI/180.0}</min_angle>
-                <max_angle> ${15.0*M_PI/180.0}</max_angle>
+                <min_angle>-${20.0*M_PI/180.0}</min_angle>
+                <max_angle> ${20.0*M_PI/180.0}</max_angle>
               </vertical>
             </scan>
             <range>
@@ -87,7 +88,7 @@
               <stddev>0.0</stddev>
             </noise>
           </ray>
-          <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_velodyne_gpu_laser.so">
+          <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_velodyne_laser.so">
             <topicName>${topic}</topicName>
             <frameName>${name}</frameName>
             <min_range>${min_range}</min_range>
@@ -96,5 +97,6 @@
           </plugin>
         </sensor>
     </gazebo>
+
   </xacro:macro>
 </robot>

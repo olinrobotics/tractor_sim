@@ -6,6 +6,7 @@ Dependencies:
 + [GRAVL](https://github.com/olinrobotics/gravl) - for teleop and testing code
 + Follow setup instructions on the GRAVL wiki if you haven't already ([reference](https://github.com/olinrobotics/gravl/wiki))
 + [tractor_sim_packages](https://github.com/olinrobotics/tractor_sim_packages) - packages for simulated localization and odometry
++ [velodyne_simulator](https://bitbucket.org/DataspeedInc/velodyne_simulator/src/master/) - packages for simulated 3D lidar
 
 Installation:
 + `cd ~/catkin_ws/src`

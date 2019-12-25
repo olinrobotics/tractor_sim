@@ -191,14 +191,6 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <xacro:gravl_sensor sensor_name="camera"
                 x_pos="2.08" y_pos="0" z_pos="1.04"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <!--
-  <xacro:gravl_sensor sensor_name="hokuyo-ust-10lx"
-                x_pos="2.02" y_pos="0" z_pos="1.19"
-                x_rot="0" y_rot="1.5" z_rot="0"/> 
-  <xacro:gravl_sensor sensor_name="hokuyo-uxm-30lx-e"
-                x_pos="2.02" y_pos="0" z_pos="1.25"
-                x_rot="0" y_rot="0" z_rot="0"/>
-  -->
   <xacro:gravl_sensor sensor_name="imu"
                 x_pos="-0.3" y_pos="0" z_pos="1"
                 x_rot="0" y_rot="0" z_rot="0"/>
@@ -208,9 +200,11 @@ https://github.com/olinrobotics/gravl/wiki/Kubo:-Transforms-->
   <xacro:gravl_sensor sensor_name="gps"
                 x_pos="0.3" y_pos="0" z_pos="2.21"
                 x_rot="0" y_rot="0" z_rot="0"/>
-  <xacro:lidarx name="3d_lidar" gpu="true"
-                x_pos="2.5" y_pos="0" z_pos="1.25"
-                x_rot="0" y_rot="1.5" z_rot="0"/>
+
+  <xacro:lidarx parent="base_link" name="lidarx" topic="/lidarx_points" hz="10" samples="440">
+    <origin xyz="2.5 0 1.25" rpy="0 0.5 0" />
+  </xacro:lidarx>
+
   <!-- Hokuyo Laser -->
   <!-- Using mesh example
   <link name="hokuyo">
