@@ -10,7 +10,7 @@
 
     <!-- Asphalt road -->
     <include>
-      <uri>model://asphalt_plane</uri>
+      <uri>model://big_asphalt_plane</uri>
       <name>asphalt</name>
       <pose>0 0 0 0 0 0</pose>
     </include>
@@ -25,7 +25,7 @@
       </model>
       <pose>0 0 0 0 0 0</pose>
       <box>
-        <size>20 20 0.01</size>
+        <size>30 30 0.01</size>
       </box>
       <model_count>10</model_count>
       <distribution>
@@ -43,7 +43,43 @@
       </model>
       <pose>0 0 0 0 0 0</pose>
       <box>
-        <size>20 20 0.01</size>
+        <size>30 30 0.01</size>
+      </box>
+      <model_count>10</model_count>
+      <distribution>
+        <type>random</type>
+      </distribution>
+    </population>
+
+    <!-- Randomly generate people -->
+    <population name="people">
+      <model name="people">
+        <include>
+          <static>true</static>
+          <uri>model://person_standing</uri>
+        </include>
+      </model>
+      <pose>0 0 0 0 0 0</pose>
+      <box>
+        <size>30 30 0.01</size>
+      </box>
+      <model_count>10</model_count>
+      <distribution>
+        <type>random</type>
+      </distribution>
+    </population>
+
+    <!-- Randomly generate walking people -->
+    <population name="walking_people">
+      <model name="walking_people">
+        <include>
+          <static>true</static>
+          <uri>model://person_walking</uri>
+        </include>
+      </model>
+      <pose>0 0 0 0 0 0</pose>
+      <box>
+        <size>30 30 0.01</size>
       </box>
       <model_count>10</model_count>
       <distribution>

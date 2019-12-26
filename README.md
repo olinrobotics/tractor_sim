@@ -17,7 +17,7 @@ Installation:
 + `catkin_make`
 
 To use the models included in this repo, copy the contents of the folder to `~/.gazebo/models`
-+ `cd ~/catkin_ws/src/tractor_sim/models`
++ `cd ~/catkin_ws/src/tractor_sim/tractor_sim_gazebo/models`
 + `cp -R . ~/.gazebo/models`
 
 ## Usage
