@@ -67,3 +67,10 @@ To setup hitch commands:
 + **tractor_delay** - either 0 or 1. If set to 1, then tractor will react instantaneously to commands. If set to 1, the tractor will simulate the delayed response time of the real tractor (Default: 1)
 + **max_acceleration** - maximum acceleration for the tractor Note: only works when tractor_delay is 0 (Default: 0.4)
 + **max_steering_angle_velocity** - maximum steering velocity Note: only works when tractor_delay is set to 0 (Default: 1)
+
+## Known Issues
++ Running the launch file will throw the warning
+```
+[WARN] [1590601461.920958, 0.000000]: Controller Spawner couldn't find the expected controller_manager ROS interface.
+```
+if the controller spawner loads before gazebo loads, which is likely. To get around this, in the launch file the controller spawner's node has `respawn="true"`. Ideally, this should wait for gazebo to finish loading before starting the node so that the warning doesn't pop up, but this works for now.
