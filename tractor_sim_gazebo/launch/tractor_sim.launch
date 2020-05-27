@@ -30,7 +30,7 @@ limitations under the License.
 -->
 
 <launch>
-  <arg name="namespace" default="/kubo"/>
+  <arg name="namespace" default="/"/>
   <arg name="world_name" default="$(find tractor_sim_gazebo)/worlds/lpb.world"/>
   <arg name="cmd_timeout" default="0.5"/>
   <arg name="tractor_delay" default="0"/> <!-- 0 for true, 1 for false TODO: make this a bool -->
@@ -60,19 +60,21 @@ limitations under the License.
           args="-urdf -param robot_description -model tractor_sim
                 -gazebo_namespace /$(arg namespace)/gazebo
                 -x $(arg x) -y $(arg y) -z $(arg z)
-                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"
+          output="screen"/>
 
     <!-- Load the joint controllers. One of these publishes the joint states
          to joint_states. -->
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
           respawn="true"
-          args="$(find tractor_sim_gazebo)/config/kubo_joint_ctrlr_params.yaml"/>
+          args="$(find tractor_sim_gazebo)/config/kubo_joint_ctrlr_params.yaml"
+          output="screen"/>
 
 
 
     <!-- Control the steering, axle, and shock absorber joints. -->
     <node name="ackermann_controller" pkg="tractor_sim_gazebo"
-          type="ackermann_controller">
+          type="ackermann_controller" output="screen">
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
       <param name="tractor_delay" value="$(arg tractor_delay)" />
       <param name="max_acceleration" value="$(arg max_acceleration)" />
@@ -83,7 +85,8 @@ limitations under the License.
   </group>
 
 
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="rob_st_pub" >
+  <node pkg="robot_state_publisher" type="robot_state_publisher"
+    name="rob_st_pub" output="screen">
     <!-- <remap from="robot_description" to="different_robot_description" />
     <remap from="joint_states" to="different_joint_states" /> -->
   </node>
