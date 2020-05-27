@@ -106,7 +106,7 @@
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
   <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_dia tire_width wheel_mass mesh_file">
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
-      <null_inertial/>
+      <xacro:null_inertial/>
     </link>
 
     <!-- The left and right axles have the same axis so that identical
@@ -153,7 +153,7 @@
         </geometry>
       </collision>
 
-      <thick_walled_tube_inertial
+      <xacro:thick_walled_tube_inertial
           inner_rad="${hub_dia / 2}" outer_rad="${tire_dia / 2}"
           height="${tire_width}" mass="${wheel_mass}"/>
     </link>
@@ -162,12 +162,12 @@
   <!-- Front wheel -->
   <xacro:macro name="front_wheel"
                params="lr_prefix fr_prefix lr_reflect fr_reflect">
-    <fshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+    <xacro:fshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
                  child="${lr_prefix}_steering_link"/>
 
     <link name="${lr_prefix}_steering_link">
-      <null_inertial/>
+      <xacro:null_inertial/>
     </link>
 
     <joint name="${lr_prefix}_steering_joint" type="revolute">
@@ -190,7 +190,7 @@
       </actuator>
     </transmission>
 
-    <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+    <xacro:wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${ftire_dia}" tire_width="${ftire_width}"
                  wheel_mass="${fwheel_mass}"
@@ -200,10 +200,10 @@
   <!-- Rear wheel -->
   <xacro:macro name="rear_wheel"
                params="lr_prefix fr_prefix lr_reflect fr_reflect">
-    <bshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+    <xacro:bshock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
                  child="${lr_prefix}_${fr_prefix}_axle_carrier"/>
-    <wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
+    <xacro:wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}"
                  tire_dia="${btire_dia}" tire_width="${btire_width}"
                  wheel_mass="${bwheel_mass}"
