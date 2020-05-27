@@ -30,7 +30,7 @@ limitations under the License.
 -->
 
 <launch>
-  <arg name="namespace" default="/"/>
+  <arg name="namespace" default="/kubo"/>
   <arg name="world_name" default="$(find tractor_sim_gazebo)/worlds/lpb.world"/>
   <arg name="cmd_timeout" default="0.5"/>
   <arg name="tractor_delay" default="0"/> <!-- 0 for true, 1 for false TODO: make this a bool -->
@@ -65,6 +65,7 @@ limitations under the License.
     <!-- Load the joint controllers. One of these publishes the joint states
          to joint_states. -->
     <node name="controller_spawner" pkg="controller_manager" type="spawner"
+          respawn="true"
           args="$(find tractor_sim_gazebo)/config/kubo_joint_ctrlr_params.yaml"/>
 
 

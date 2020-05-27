@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find tractor_sim_description)/urdf/kubo.urdf.xacro'"/>
+  <param name="robot_description" command="$(find xacro)/xacro '$(find tractor_sim_description)/urdf/kubo.urdf.xacro'"/>
   <arg name="rviz_file" default="$(find tractor_sim_description)/rviz/amcl.rviz"/>
 
   <!-- send fake joint values -->
@@ -10,7 +10,7 @@
   </node>
 
   <!-- Combine joint values -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
   <!-- Show in Rviz   -->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_file)"/>

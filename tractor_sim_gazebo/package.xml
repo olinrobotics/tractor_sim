@@ -6,8 +6,15 @@
     tractor_sim_gazebo is used with Gazebo to simulate a tractor with
     Ackermann steering.
   </description>
+  <maintainer email="amy.phung@students.olin.edu">
+    Amy Phung
+  </maintainer>
+
+  <license>Apache 2.0</license>
   <!--
-    Copyright (c) 2013-2015 Wunderkammer Laboratory
+    Derivative from https://github.com/jbpassot/ackermann_vehicle
+
+    Copyright (c) 2011-2013 Wunderkammer Laboratory
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
@@ -18,16 +25,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   -->
-  <maintainer email="jim.rothrock@wunderkammerlab.com">
-    Jim Rothrock
-  </maintainer>
-  <license>Apache 2.0</license>
 
-  <url type="website">http://wiki.ros.org/ackermann_vehicle_gazebo</url>
-  <url type="bugtracker">https://github.com/wunderkammer-laboratory/ackermann_vehicle/issues</url>
-  <url type="repository">https://github.com/wunderkammer-laboratory/ackermann_vehicle.git</url>
+  <url type="website">https://github.com/olinrobotics/gravl/wiki/Gazebo-Simulation</url>
+  <url type="repository">https://github.com/olinrobotics/tractor_sim</url>
 
-  <author email="jim.rothrock@wunderkammerlab.com">Jim Rothrock</author>
+  <author email="amy.phung@students.olin.edu">Amy Phung</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
